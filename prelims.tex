@@ -1,0 +1,21 @@
+\begin{definition}\label{similarity type}
+    \textbf{(Similarity Type)} A \textit{similarity type} is a pair $\tau = (O, \rho)$ where $O$ is a non-empty set of elements called modal terms. And where $\rho$ is a function $O \rightarrow \mathbb{N}$ (called an arity function), which assigns each modal term to a natural number that denotes the number of arguments that the associated modal operator takes. We write $\alpha$ to denote a generic modal term.
+\end{definition}
+
+\begin{definition}\label{completeness 1}
+    \textbf{(Completeness (1))} A (normal) logic $\Lambda$ is called \textit{strongly complete} with respect to a class of frames $\mathsf{F}$ if for every set of formulas $\Gamma$ and  every formula $\phi$,
+    \begin{equation*}
+        \Gamma \Vdash_\mathsf{F} \phi \text{ implies } \Gamma \vdash_{\Lambda} \phi.
+    \end{equation*}
+\end{definition}
+
+\begin{definition} \label{completeness 2}
+    \textbf{(Completeness (2))} A (normal) logic $\Lambda$ is \textit{strongly complete} with respect to a class of frames $\mathsf{F}$ if for every set of formulas $\Gamma$:
+    \begin{equation*}
+        \text{if }\Gamma \text{ is } \Lambda\text{-consistent} \text{ then }  \Gamma \text{ is satisfiable in some model based on a frame } \F\in\mathsf{F}.
+    \end{equation*}
+\end{definition}
+
+\begin{proposition}\label{completeness equivalence proposition}
+    Completeness (1) (Definition~\ref{completeness 1}) iff Completeness (2) (Definition~\ref{completeness 2})
+\end{proposition}
