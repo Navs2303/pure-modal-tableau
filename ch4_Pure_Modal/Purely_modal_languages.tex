@@ -1,0 +1,449 @@
+\section{Introduction to Purely Modal Languages}\label{pure modal languages section}
+
+\par Purely modal languages are modal languages that remove the use of the disjunction (and consequently the conjunction) and $\top$ (and consequently $\bot$). The pure modal language we investigate in this chapter is able to express everything in the basic modal language. We prove this in Proposition~\ref{pure modal expresses basic proposition}. 
+%Ignored for First submission
+%\nnote{(The above in this paragraph has been redone. Please check.)} 
+For this, we define the similarity type that will be used (Definition~\ref{similarity type}) to be arbitrary, including the terms $\iota_0, \iota_1,$ and $\iota_2$, which are nullary, unary, and binary terms, respectively. For the language we are considering, we also allow modal terms to be composed under certain restrictions. This language is taken from~\cite{goranko2006elementary}. Also, the definitions in this section are adapted from~\cite{goranko2006elementary} as well. For our study, we restrict the language such that $\iota_0$ is the only nullary modality we will consider. In this chapter, when we say $\tau$ is a similarity type, we mean that $\tau$ is a similarity type that includes the terms $\iota_0, \iota_1,$ and $\iota_2$.
+
+
+
+\begin{definition}
+
+    \textbf{(The set $\mtt$)} Let $\tau$ be a similarity type. We define the set $\mtt$ (model terms from $\tau$) inductively as follows:
+
+    \begin{enumerate}[label=(\roman*)]
+
+        \item if $\alpha \in \tau$ then $\alpha\in\mtt$,
+
+        \item if $m > 0 \text{ and } \alpha, \beta_1, \ldots, \beta_m \in \mtt \text{ and } \rho(\alpha) = m$ then $\alpha(\beta_1,\ldots,\beta_m) \in \mtt \text{ and } \rho(\alpha(\beta_1,\ldots$\\
+        $,\beta_m)) = \rho(\beta_1) + \cdots + \rho(\beta_m)$,
+
+        \item and nothing else.
+
+    \end{enumerate}
+
+    %\wnote{This definition deviates from Gonranko and Vakarelov in that it does not include constant formulas as 0-ary terms. Why? If there is a reason for this deviation, it should be discussed and motivated. }
+
+\end{definition}
+
+\par Note: It is suitable to mention here the inductive definition of $\iota_n$. We have the modal terms $\iota_0$, $\iota_1$, $\iota_2$ in our similarity type, and so in $\mtt$, we define $\iota_n = \iota_2(\iota_1, \iota_{n-1})$ $(n\geq3)$. We call the modal terms satisfying (i) atomic modal terms and those that satisfy (ii) composite modal terms.
+\par Next, we define the frames we will be using. Note that if for any $(n+1)$-ary relations we will denote them as $R_\alpha (wu_1\ldots u_n)$ or $R_\alpha wu_1\ldots u_n$.
+%Ignored for First submission
+%\nnote{Phrasing?}
+
+\begin{definition}\label{mtt-frame}
+
+    \textbf{($\mtt$-frame)} Let $\tau$ be a model similarity type, then a \textit{$\mtt$-frame} is a tuple $\Fmtt = (W, \{ R_{\alpha} \}_{\alpha \in \mtt})$ that consists of:
+
+    \begin{enumerate}[label=(\roman*)]
+
+        \item A non-empty set $W$ (of worlds).
+
+        \item For each $m\geq0$, each $m$-ary modal term $\alpha$ in $\mtt$, an $(m+1)$-ary relation $R_{\alpha}$, defined as follows:
+
+        \begin{itemize}
+
+            \item $R_{\iota_0} = W \coms R_{\iota_1} = \{ (w,w) \mid w \in W \} \coms R_{\iota_2} = \{ (w,w,w) \mid w\in W\}$,
+
+            \item for every modal term $\alpha \in\tau$, we have $R_\alpha \subseteq W^{\rho(\alpha)+1}$,
+
+            \item letting $\rho(\beta_i)=b_i, 1\leq i \leq m$, $R_{\alpha(\beta_1,\ldots,\beta_m)} = \{ (w, w^1_1, \ldots, w^1_{b_1}, w^2_{1},\ldots, w^2_{b_2},\ldots, w^m_{1},\ldots, w^m_{b_m}) \in W^{b_1 + b_2 + \cdots + b_m + 1} \mid \text{there } \text{are } u_1, \ldots, u_m \in W$ where $R_{\alpha}wu_1\ldots u_m\;\text{and}\;R_{\beta_i}u_iw^i_1\ldots w^i_{b_i}$ for all $1\leq i\leq m$\} = $R_\alpha\circ (R_{\beta_1},\ldots,R_{\beta_m})$, 
+
+            \item and nothing else.
+
+        \end{itemize}
+
+    \end{enumerate}
+    Note that when it is clear from the context, we often omit the subscript $\mtt$ from $\F_{\mtt}$.
+\end{definition}
+
+\par
+
+\begin{definition}
+
+    \textbf{($\mtt$-model)} Let $\Fmtt$ be a $\mtt$-frame. A \textit{$\mtt$-model} (denoted $\Mmtt$) is an ordered pair $(\Fmtt,V)$, where $V:\PVAR\to\mathcal{P}(W)$ is a valuation on the set of propositional variables \PVAR. We denote a $\mtt$-model as $\Mmtt = (W,\{ R_{\alpha} \}_{\alpha \in \mtt},V)$, but again, we will often omit the subscript $\mtt$ when it's clear from the context.
+
+\end{definition}
+
+
+
+\par Now we introduce the purely modal language.
+
+
+
+\begin{definition}
+
+    \textbf{(Purely modal language)}  Let $\tau$ be a similarity type. The formulas in the purely modal language (which we denote as $\Lp$) are given by the rule:
+
+    \begin{equation*}
+        \varphi := p\mid \neg\varphi \mid [\alpha](\varphi_1,\ldots,\varphi_m)
+    \end{equation*}
+
+    \par where $p\in$ \PVAR, $\alpha \in \mtt$ and $\rho(\alpha)=m$.
+
+\end{definition}
+
+Thus, the purely modal language is constructed from a set $\PVAR$ of propositional variables, negated formulas, and what we call boxed formulas.
+
+
+
+\begin{definition}\label{dual of alpha}
+
+    \textbf{(Dual of $\alpha$)} For any modal formula $[\alpha](\phi_1,\phi_2,\ldots,\phi_{\rho(\alpha)})$, we define its \textit{dual} as $\langle\alpha\rangle(\phi_1,\phi_2,\ldots,\phi_{\rho(\alpha)}) := \neg[\alpha](\neg\phi_1,\neg\phi_2,\ldots,\neg\phi_{\rho(\alpha)})$.
+
+\end{definition}
+
+
+
+\begin{definition}\label{satisfiability clauses - pure}
+
+    \textbf{(Semantics)} Let $\Mmtt = (W,\{ R_{\alpha} \}_{\alpha \in \mtt},V)$ be a $\mtt$-model and $w\in W$, then
+
+    \begin{itemize}
+
+        \item $\Mmtt , w \Vdash p$ \quad iff \quad $p\in V(p)$
+
+        \item $\Mmtt , w \Vdash \neg\phi$ \quad iff \quad $\Mmtt , w \not\Vdash \phi$
+
+    \end{itemize}    
+
+    \par Now for the boxed formulas, we have two cases: $\rho(\alpha)=m > 0$ and $\rho(\alpha) = 0$.
+
+    \par So, if $\rho(\alpha)=m > 0$
+
+    \begin{center}
+
+        $\Mmtt,  w \Vdash [\alpha](\phi_1,\phi_2,\ldots,\phi_m)$\\
+
+        iff\\
+
+        for all $v_1,v_2, \ldots, v_m \in W$ with $R_{\alpha}wv_1v_2\ldots v_m$ we have\\
+
+        $\Mmtt, v_1\Vdash\phi_1$ or $\Mmtt, v_2\Vdash\phi_2$ or $\cdots$ or $\Mmtt, v_m\Vdash\phi_m$
+
+    \end{center}
+
+
+
+
+
+
+
+\par Now for $\iota_0$, (i.e., when $m=0$)
+
+    \begin{center}
+
+        $\Mmtt,  w \Vdash [\iota_0]$ \quad iff \quad $w\in W$
+
+    \end{center}
+
+
+
+
+
+    %prev definition of when m=0
+
+% \par Now for $m=0$ then
+
+%     \begin{center}
+
+%         $\Mmtt,  w \Vdash [\alpha]$ \quad iff \quad $w\in R_\alpha$
+
+%     \end{center}
+
+% \par and its dual as:
+
+% \begin{center}
+
+%         $\Mmtt,  w \Vdash \langle\alpha\rangle$ \quad iff \quad $w\not\in R_\alpha$
+
+%     \end{center}
+
+\end{definition}
+
+\begin{remark}
+
+\par Now for the dual of the box ($m > 0$) using Definition~\ref{dual of alpha}:
+
+    \begin{center}
+
+        $\Mmtt,  w \Vdash \langle\alpha\rangle(\phi_1,\phi_2,\ldots,\phi_m)$\\
+
+        iff\\
+
+        there are states $v_1,v_2, \ldots, v_m \in W$ with $R_{\alpha}wv_1v_2\ldots v_m$ where \\
+
+        $\Mmtt, v_i\Vdash\phi_i$ for each $i \in \{1,2,\ldots,m \}$
+
+    \end{center}
+
+\par and for $m=0$:
+
+    \begin{center}
+
+        $\Mmtt,  w \Vdash \langle\iota_0\rangle$ \quad iff \quad $w\not\in W$
+
+    \end{center}
+\end{remark}
+
+
+
+\par Note that from these definitions it follows that
+
+\begin{center}
+
+    $\lsb\alpha\rsb(\lsb\beta_1\rsb(\phi_1^1\text{,\,}\phi_2^1\text{,\,}\ldots \text{,\,}\phi_{\rho(\beta_1)}^1)\text{,\,} \ldots \text{,\,} \lsb\beta_{m}\rsb(\phi_1^m \text{,\,}\ldots \text{,\,}\phi_{\rho(\beta_m)}^m))$
+
+\end{center}
+
+\par is equivalent to 
+
+\begin{center}
+
+    $\lsb\alpha(\beta_1\text{,\,}\ldots\text{,\,}\beta_{\rho(\alpha)})\rsb(\phi_1^1\text{,\,}\phi_2^1\text{,\,}\ldots \text{,\,}\phi_{\rho(\beta_1)}^1\text{,\,} \phi_1^2\text{,\,} \ldots \text{,\,}\phi_{\rho(\beta_2)}^2\text{,\,} \ldots\text{,\,} \phi_1^m \text{,\,}\ldots \text{,\,}\phi_{\rho(\beta_m)}^m)$.
+
+\end{center}
+
+
+
+\par Using the above equivalence, we can define a subset of formulas from the pure modal language, which we will call ``Maximally composed" formulas. Where we compose as many boxes (or diamonds) as possible. We call this subset $\LpMax$.
+
+
+
+\begin{definition}\label{maximally composed formulas definition - pure}
+    \textbf{(Maximally composed formulas)} The set of maximally composed $\Lp$ formulas ($\LpMax$) is defined by the union of the sets of formulas of the forms $\phi$ and $\psi$ given by the mutually inductive rule:
+
+    \begin{center}
+
+        $\phi := p \mid \neg\psi \mid [\alpha](\psi_1, \psi_2, \ldots,\psi_{\rho(\alpha)})$\\
+
+        $\psi := p \mid \neg\phi \mid \langle\alpha\rangle(\phi_1, \phi_2, \ldots,\phi_{\rho(\alpha)})$
+
+    \end{center}\
+
+\par where $p\in\PVAR$ and $\alpha\in\mtt$.
+
+\end{definition}
+
+
+
+\par The rest of this section describes how we can capture the semantics of the disjunction in $\Lp$.
+
+
+
+\paragraph{Capturing the semantics of the disjunction:}
+
+\par Every similarity type $\tau$ contains the modal terms $\iota_0, \iota_1,$ and $\iota_2$ and so all $\mtt$-models contain the respective corresponding relations. Using the definition that $\iota_n = \iota_2(\iota_1, \iota_{n-1})$ $(n\geq3)$, we can then conclude that the $\riotn$ relation is $R_{\iota_n} = \{ (\underbrace{w,\ldots,w}_{n+1 \text{times}}) \mid w\in W\}$. So, for every $\mtt$-model $\M$:
+
+
+
+% \begin{definition}
+
+%     \textbf{The iota-n ($\iota$) relation}: For any $\tau$-model $\M$ we define:
+
+% $R_{\iota_0}$ to be: $R_{\iota_0} := W$, $R_{\iota_1}$ as: $R_{\iota_1} := \{ (w,w) \mid w\in W\}$,
+
+% $R_{\iota_2}$ as: $R_{\iota_2} := \{ (w,w,w) \mid w\in W\}$, Now using the definition of $\iota_n := \iota_2(\iota_1,\iota_{n-1})$ we have that $R_{\iota_n} = \{ (\underbrace{w,\ldots,w}_{n+1 \text{times}}) \mid w\in W\}$. Note that $\rho(\iota_n) = n$.
+
+% \end{definition}
+
+
+
+\begin{center}
+
+    $\M, w \Vdash [\alpha](\phi_1, \phi_2, \ldots, \phi_{\rho(\alpha)})$\\
+
+    iff\\
+
+    for all $v_1,v_2, \ldots, v_{\rho(\alpha)}$ with $R_{\alpha}wv_1v_2\ldots v_{\rho(\alpha)}$ it is the case that\\
+
+    $\M, v_1\Vdash\phi_1$ or $\M, v_2\Vdash\phi_2$ or $\cdots$ or $\M, v_{\rho(\alpha)}\Vdash\phi_{\rho(\alpha)}$.
+
+\end{center}
+
+
+
+\par This is for an arbitrary relation $R_\alpha$, but if we use the $\iota$-relation we get:
+
+\begin{center}
+
+    $\M, w \Vdash [\iota_n](\phi_1, \phi_2, \ldots, \phi_{n})$\\
+
+    iff\\
+
+    for all $v_1,v_2, \ldots, v_{n}$ with $R_{\iota_n}wv_1v_2\ldots v_{n}$ it is the case that\\
+
+    $\M, v_1\Vdash\phi_1$ or $\M, v_2\Vdash\phi_2$ or $\cdots$ or $\M, v_{n}\Vdash\phi_{n}$.
+
+\end{center}
+
+\par Now by definition, if $R_{\iota_n}wv_1v_2\ldots v_{n}$, then $(w,v_1,\ldots,v_n) \in R_{\iota_n}.$ This means that  $w=v_1=\cdots=v_n$. So then:
+
+\begin{center}
+
+    $\M, w \Vdash [\iota_n](\phi_1, \phi_2, \ldots, \phi_{n})$\\
+
+    iff\\
+
+    %for all $y_1,y_2, \ldots, y_{n}$ with $R_{\iota_n}xy_1y_2\ldots y_{n}$ we have\\
+
+    $\M, w\Vdash\phi_1$ or $\M, w\Vdash\phi_2$ or $\cdots$ or $\M, w\Vdash\phi_{n}$\\
+
+    iff\\
+
+    $\M, w \Vdash \phi_1 \vee \phi_2 \vee \cdots \vee \phi_n$.
+
+\end{center}
+
+
+
+\par As we can see, using the correct modality, we can capture the semantics of a disjunction. Now, note for the $\iota_1$ and $\iota_0$ we have that:
+
+\begin{center}
+
+    $\M, w \Vdash [\iota_1](\phi_1)$\\
+
+    iff\\
+
+    $\M, w \Vdash \phi_1$
+
+\end{center}
+
+\par and we have
+
+\begin{align*}
+    \M, w \Vdash [\iota_0] \quad &\text{iff} \quad x\in R_{\iota_0} = W\\
+    &\text{iff} \quad \text{always}\\
+    &\text{iff} \quad \M, w \Vdash \top.
+\end{align*}
+
+\par It may seem that $\iota_1$ doesn't play much of a role, but it is useful since any formula $\phi$ is equivalent to $[\iota_1]\phi$. This equivalence will be used later. We also note that $\iota_0$ captures the semantics of $\top$, which is used in the basic modal language.
+
+\par Next, we want to prove that every modal language $ML_\tau$ is expressively equivalent to a purely modal language $\Lp$. To do this, we will need to use induction on $\Lp$, but due to how we can compose terms in $\mtt$, it is helpful to introduce functions that measure the complexity of a formula. We construct such a function next.
+
+\begin{definition}\label{cep of modal term def}
+    \textbf{(Cumulative Depth of a modal term)} Let $\tau$ be a similarity type. We define the function $cep:\mtt\to\mathbb{N}$ as follows:
+    \begin{enumerate}
+        \item if $\alpha\in\mtt$ and $\alpha$ is atomic then $cep(\alpha)=1$.
+        \item  and if $\alpha\in\mtt$ and $\alpha$ is composite, i.e., $\alpha=\pi(\beta_1,\ldots,\beta_{\rho(\pi)})\in\mtt$ (for some $\pi,\beta_1,\ldots,\beta_{\rho(\pi)}\in\mtt$), then $cep(\alpha)=1 + cep(\pi) + \Sigma_{i=1}^{\rho(\pi)}cep(\beta_i)$.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}\label{com of formula def}
+    \textbf{(Complexity of a formula)} We let $\tau$ be a similarity type. We define the function $com: \Lp\to \mathbb{N}$ as follows ($m=\rho(\alpha)$):
+    \begin{enumerate}
+        \item if $\phi = p$ then $com(\phi)=0$
+        \item if $\phi = \neg\psi$ then $com(\phi) = 1 + com(\psi)$
+        \item if $\phi = [\alpha](\psi_1,\ldots,\psi_{m})$ then $com(\phi) = cep(\alpha) + \Sigma_{i=1}^{m} com(\psi_i)$.
+    \end{enumerate}
+\end{definition}
+
+\begin{lemma}\label{composed is higher com lemma}
+    Let $com:\Lp\to\mathbb{N}$ be as defined above and let $\pi(\beta_1,\ldots,\beta_m)\in\mtt$ with $\rho(\pi) = m$ and $\rho(\beta_i) = b_i$ for all $1\leq i\leq m$. Then $com([\pi(\beta_1,\ldots,\beta_m)](\phi_1^1,\ldots,\phi_{b_1}^1,\ldots,\phi_1^m,\ldots,\phi_{b_m}^m))
+    \\ > com([\pi]([\beta_1](\phi_1^1,\ldots,\phi_{b_1}^1),\ldots,[\beta_m](\phi_1^m,\ldots,\phi_{b_m}^m)))$.
+\end{lemma}
+    
+\begin{proof}
+    Let $com:\Lp\to\mathbb{N}$ be as defined above and let $\pi(\beta_1,\ldots,\beta_m)\in\mtt$ with $\rho(\pi) = m$ and $\rho(\beta_i) = b_i$ for all $1\leq i\leq m$. Now,
+    \begin{align*}
+        com([\pi(\beta_1,\ldots,\beta_m)](\phi_1^1,\ldots,\phi_{b_1}^1,&\ldots,\phi_1^m,\ldots,\phi_{b_m}^m))\\
+        &= cep(\pi(\beta_1,\ldots,\beta_m)) + \Sigma_{i=1}^m\Sigma_{j=1}^{b_i} com(\phi_j^i)\\
+        & = 1 + cep(\pi) + \Sigma_{i=1}^{m}cep(\beta_i) + \Sigma_{i=1}^m\Sigma_{j=1}^{b_i} com(\phi_j^i),
+    \end{align*}
+    
+    and
+    \begin{align*}
+        com([\pi]([\beta_1](\phi_1^1,\ldots,\phi_{b_1}^1),\ldots &,[\beta_m](\phi_1^m,\ldots,\phi_{b_m}^m)))\\
+        & = cep(\pi) + \Sigma_{i=1}^{m}com[\beta_i](\phi_1^i,\ldots,\phi_{b_i}^i)\\
+        & = cep(\pi) + \Sigma_{i=1}^{m}(cep(\beta_i) + \Sigma_{j=1}^{b_i} com(\phi_j^i))\\
+        & = cep(\pi) + \Sigma_{i=1}^{m}cep(\beta_i) + \Sigma_{i=1}^m\Sigma_{j=1}^{b_i} com(\phi_j^i).
+    \end{align*}
+    Hence, our original statement is satisfied.
+\end{proof}
+
+\begin{lemma}\label{composite written with leading atomic lemma}
+    Every modality $\alpha\in\mtt$ can be rewritten such that the leading modality is atomic. 
+    %Ignored for First submission
+%\nnote{Leading modality is not defined. Is it common knowledge, or should I define it? What would a definition look like?}
+\end{lemma}
+
+\begin{proof}
+    We do this by induction on $\mtt$. \textit{Base case:} If $\alpha$ is atomic, we are done. \textit{Induction hypothesis:} Assume that the statement is true for any modality $\alpha$ such that $cep(\alpha)<m$. \textit{Induction step:} Let $\alpha$ be composite such that $cep(\alpha) = m$. Now $\alpha = \pi(\beta_1,\ldots,\beta_{\rho(\pi)})$
+    for some $\pi,\beta_1,\ldots,\beta_{\rho(\pi)}\in\mtt$. If $\pi$ is atomic, we are done. If $\pi$ is composite, since $cep(\pi)<cep(\alpha)$, we can rewrite $\pi$ as $\pi = \lambda(\mu_1,\ldots,\mu_{\rho(\lambda)})$ where $\lambda$ is atomic using our induction hypothesis.
+    Now $\alpha = (\lambda(\mu_1,\ldots,\mu_{\rho(\lambda)}))(\beta_1,\ldots,\beta_{\rho(\pi)})$, but we can reindex the $\beta_i$'s (letting $\rho(\lambda) = l$ and $\rho(\mu_i) = m_i$ for all $1\leq i\leq l$) to get $\alpha = (\lambda(\mu_1,\ldots,\mu_l))(\beta_1^1,\ldots,\beta_{m_1}^1,\ldots,\beta_1^l,\ldots,\beta_{m_l}^l) = \lambda(\mu_1(\beta_1^1,\ldots,\beta_{m_1}^1),\ldots,\mu_l(\beta_1^l,\ldots,\beta_{m_l}^l))$. Hence, by induction on $\mtt$, every modality $\alpha\in\mtt$ can be rewritten such that the leading modality is atomic.
+\end{proof}
+
+\begin{proposition}\label{pure modal expresses basic proposition}
+    Every modal language $ML_\tau$ is expressively equivalent to a purely modal language $\Lp$. 
+\end{proposition}
+
+\begin{proof}
+    We begin by defining two translations $\zeta: ML_\tau \to\Lp$ and $\eta:  \Lp \to ML_\tau$ by induction.
+    \begin{enumerate}
+        \item If $\phi = p\in\PVAR$ then $\zeta(\phi) = p$
+        \item If $\phi = \top$ then $\zeta(\phi) = [\iota_0]$
+        \item If $\phi = \neg\psi$ then $\zeta(\phi) = \neg\zeta(\psi)$
+        \item If $\phi = \psi_1\vee\psi_2$ then $\zeta(\phi) = [\iot{2}](\zeta(\psi_1),\zeta(\psi_2))$
+        \item If $\phi = [\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$ then $\zeta(\phi) = [\alpha](\zeta(\psi_1),\ldots,\zeta(\psi_{\rho(\alpha)}))$
+    \end{enumerate}
+    and
+    \begin{enumerate}
+        \item If $\phi = p\in\PVAR$ then $\eta(\phi) = p$
+        \item If $\phi = \neg\psi$ then $\eta(\phi) = \neg\eta(\psi)$
+        \item If $\phi = [\iot{0}]$ then $\eta(\phi) = \top$
+        \item If $\phi = [\iot{1}]\psi$ then $\eta(\phi) = \eta(\psi)$
+        \item If $\phi = [\iot{2}](\psi_1,\psi_2)$ then $\eta(\phi) = \eta(\psi_1) \vee \eta(\psi_2)$
+        \item If $\phi = [\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$ and $\alpha$ is atomic then $\eta(\phi) = [\alpha](\eta(\psi_1),\ldots,\eta(\psi_{\rho(\alpha)}))$
+        \item If $\phi = [\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$ and $\alpha$ is composite then write $\alpha$ as $\pi(\beta_1,\ldots,\beta_{\rho(\pi)})$ where $\pi$ is atomic (Lemma~\ref{composite  written with leading atomic lemma}). After reindexing (letting $\rho(\pi) = m$ and $\rho(\beta_i) = b_i$) $\phi=[\pi(\beta_1,\ldots,\beta_m)](\psi_1^1,\ldots,\psi_{b_1}^1,\ldots,\psi_1^m,\ldots,\psi_{b_m}^m)$ then $\eta(\phi) = [\pi](\eta([\beta_1](\psi_1^1,\ldots,\psi_{b_1}^1)),\ldots,
+        \\\eta([\beta_m](\psi_1^m,\ldots,\psi_{b_m}^m)))$.
+    \end{enumerate}
+    \par Note that every $\mtt$-model contains an $ML_\tau$-model as a reduct, obtained by omitting the relations obtained by composition and only retaining those corresponding to terms in $\tau\setminus\{\iot{0},\iot{1},\iot{2}\}$. We can therefore apply the definition of the semantics of $ML_\tau$ also to $\mtt$ models. Now we are left to prove two statements:
+    \begin{enumerate}
+        \item That for every $\mtt$-model $\M$ and state $w$ in $\M$, and for every formula $\phi\in ML_\tau$, it is the case that $\M,w\Vdash \phi$ iff $\M,w\Vdash \zeta(\phi)$,
+        \item  and that for every $\mtt$-model $\M$ and state $w$ in $\M$, and for every formula $\phi\in\Lp$, it is the case that $\M,w\Vdash \phi$ iff $\M,w\Vdash \eta(\phi)$.
+    \end{enumerate}
+    \par We prove both of these by induction on $ML_\tau$ and $\Lp$ respectively. So, for the first statement, let $\M = (W,\{ R_{\alpha} \}_{\alpha \in \mtt},V)$ be a $\mtt$-model and $w$ a state, and let $\phi\in ML_\tau$.
+    \par \textit{Case 1:} If $\phi = p \in\PVAR$ then $\M,w\Vdash p$ iff $\M,w\Vdash \zeta(\phi)$.
+    \par \textit{Case 2:} If $\phi = \top$ then $\M,w\Vdash \top$ iff $w\in W$ iff $\M,w\Vdash [\iot{0}]$ iff $\M,w\Vdash \zeta(\phi)$.
+    \par \textit{Case 3:} Assume the statement is true for $\psi$. If $\phi = \neg\psi$ then $\M,w\Vdash\phi$ iff $\M,w\Vdash \neg\psi$ iff $\M,w\not\Vdash \psi$ iff $\M,w\not\Vdash \zeta(\psi)$ iff $\M,w\Vdash \neg\zeta(\psi)$ iff $\M,w\Vdash \zeta(\phi)$.
+    \par \textit{Case 4:} Assume the statement is true for $\psi_1$ and $\psi_2$. If $\phi = \psi_1\vee\psi_2$ then $\M,w\Vdash\phi$ iff $\M,w\Vdash\psi_1\vee\psi_2$ iff $\M,w\Vdash\psi_1$ or $\M,w\Vdash\psi_2$ iff $\M,w\Vdash\zeta(\psi_1)$ or $\M,w\Vdash\zeta(\psi_2)$ iff $\M,w\Vdash[\iot{2}](\zeta(\psi_1),\zeta(\psi_2))$ iff $\M,w\Vdash\zeta(\phi)$.
+    \par \textit{Case 5:} Let $\alpha\in\tau$ and assume the statement is true for $\psi_1,\ldots,\psi_{\rho(\alpha)}$. If $\phi = [\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$ then
+    $\M,w\Vdash\phi$
+    iff $\M,w\Vdash[\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$
+    iff for all states $v_1,\ldots,v_{\rho(\alpha)}$ such that $R_\alpha wv_1\ldots v_{\rho(\alpha)}$
+    and we have that for some $1\leq i\leq \rho(\alpha)$, $\M,v_i\Vdash\psi_i$. This is true 
+    iff $\M,v_i\Vdash\zeta(\psi_i)$ for some $1\leq i\leq \rho(\alpha)$
+    iff $\M,w\Vdash[\alpha](\zeta(\psi_1),\ldots,\zeta(\psi_{\rho(\alpha)}))$ iff $\M,w\Vdash\zeta(\phi)$.
+    
+    \par For the second statement, let $\M = (W,\{ R_{\alpha} \}_{\alpha \in \mtt},V)$ be a $\mtt$-model and $w$ a state, and let $\phi\in \Lp$.
+    \par \textit{Case 1:} If $\phi = p \in\PVAR$ then $\M,w\Vdash p$ iff $\M,w\Vdash \eta(\phi)$.
+    \par \textit{Case 2:} Assume the statement is true for $\psi$. If $\phi = \neg\psi$ then $\M,w\Vdash\phi$ iff $\M,w\Vdash \neg\psi$ iff $\M,w\not\Vdash \psi$ iff $\M,w\not\Vdash \eta(\psi)$ iff $\M,w\Vdash \neg\eta(\psi)$ iff $\M,w\Vdash \eta(\phi)$.
+    \par \textit{Case 3:} If $\phi = [\iot{0}]$ then $\M,w\Vdash\phi$ iff $\M,w\Vdash[\iot{0}]$ iff $w\in W$ iff $\M,w\Vdash \top$ iff $\M,w\Vdash \eta(\phi)$.
+    \par \textit{Case 4:} Assume the statement is true for $\psi$. If $\phi = [\iot{1}]\psi$ then $\M,w\Vdash\phi$ iff $\M,w\Vdash[\iot{1}]\psi$ iff $\M,w\Vdash\psi$ (since $R_\iot{1}ww$ and $w$ is the only $\iot{1}$-successor) iff $\M,w\Vdash\eta(\psi)$ iff $\M,w\Vdash\eta(\phi)$.
+    \par \textit{Case 5:} Assume the statement is true for $\psi_1$ and $\psi_2$. If $\phi = [\iot{2}](\psi_1,\psi_2)$ then $\M,w\Vdash\phi$ iff $\M,w\Vdash[\iot{2}](\psi_1,\psi_2)$ iff $\M,w\Vdash\psi_1$ or $\M,w\Vdash\psi_2$ iff $\M,w\Vdash\eta(\psi_1)$ or $\M,w\Vdash\eta(\psi_2)$ iff $\M,w\Vdash\eta(\psi_1) \vee \eta(\psi_2)$ iff $\M,w\Vdash\eta(\phi)$.
+    \par \textit{Case 6:} Let $\alpha\in\mtt$ be atomic and assume the statement is true for $\psi_1,\ldots,\psi_{\rho(\alpha)}$. If $\phi = [\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$ then $\M,w\Vdash\phi$ iff $\M,w\Vdash[\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$ iff for all states $v_1,\ldots,v_{\rho(\alpha)}$ such that $R_\alpha wv_1\ldots v_{\rho(\alpha)}$ and $\M,v_i\Vdash\psi_i$, for some $1\leq i\leq \rho(\alpha)$. This is true iff $\M,v_i\Vdash\eta(\psi_i)$ for some $1\leq i\leq \rho(\alpha)$, iff $\M,w\Vdash[\alpha](\eta(\psi_1),\ldots,\eta(\psi_{\rho(\alpha)}))$ iff $\M,w\Vdash\eta(\phi)$.
+
+    % \par \tcr{V1}
+    % \par \textit{Case 7:} Let $\alpha\in\mtt$ be composite. If $\phi = [\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$ then $\M,w\Vdash\phi$ iff $\M,w\Vdash[\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$. Now, since $\alpha$ is composite, we can rewrite it as a modal term $\pi(\beta_1,\ldots,\beta_{\rho(\pi)})$ where $\pi$ is atomic (Lemma~\ref{composite written with leading atomic lemma}). After reindexing the $\psi$'s (letting $\rho(\pi) = m$ and $\rho(\beta_i) = b_i$) we get that $\M,w\Vdash[\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$ is true iff $\M,w\Vdash[\pi(\beta_1,\ldots,\beta_m)](\psi_1^1,\ldots,\psi_{b_1}^1,\ldots,\psi_1^m,\ldots,\psi_{b_m}^m)$ iff $\M,w\Vdash[\pi]([\beta_1](\psi_1^1,\ldots,\psi_{b_1}^1),\ldots,[\beta_m](\psi_1^m,\ldots,\psi_{b_m}^m))$. This shows that $\phi = [\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$ can be rewriten as $[\pi]([\beta_1](\psi_1^1,\ldots,\psi_{b_1}^1),\ldots,[\beta_m](\psi_1^m,\ldots,\psi_{b_m}^m))$ where $\pi$ is atomic. This then falls under Case 6 and so $\M,w\Vdash[\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$ iff $\M,w\Vdash[\pi]([\beta_1](\psi_1^1,\ldots,\psi_{b_1}^1),\ldots,[\beta_m](\psi_1^m,\ldots,\psi_{b_m}^m))$
+    
+    \par \textit{Case 7:} Let $\alpha\in\mtt$ be composite. Let $\phi = [\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$ and assume the statement is true for lower $com$ value (Definition~\ref{com of formula def}). Then $\M,w\Vdash\phi$ iff $\M,w\Vdash[\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$. Now, since $\alpha$ is composite, we can rewrite it as a modal term $\pi(\beta_1,\ldots,\beta_{\rho(\pi)})$ where $\pi$ is atomic (Lemma~\ref{composite written with leading atomic lemma}). After reindexing the $\psi$'s (letting $\rho(\pi) = m$ and $\rho(\beta_i) = b_i$) we get that $\M,w\Vdash[\alpha](\psi_1,\ldots,\psi_{\rho(\alpha)})$ is true iff $\M,w\Vdash[\pi(\beta_1,\ldots,\beta_m)](\psi_1^1,\ldots,\psi_{b_1}^1,\ldots,\psi_1^m,\ldots,\psi_{b_m}^m)$ iff
+    $$\M,w\Vdash[\pi]([\beta_1](\psi_1^1,\ldots,\psi_{b_1}^1),\ldots,[\beta_m](\psi_1^m,\ldots,\psi_{b_m}^m))$$ iff for any states $v_1,\ldots,v_m$ such that $R_\pi wv_1\ldots v_m$ we have $\M,v_i\Vdash[\beta_i](\psi_1^i,\ldots,\psi_{b_i}^i)$ for some $1\leq i \leq m$. Since $com([\beta_i](\psi_1^i,\ldots,\psi_{b_i}^i))<com(\phi)$, then by our induction hypothesis, this is true iff  $\M,v_i\Vdash\eta([\beta_i](\psi_1^i,\ldots,\psi_{b_i}^i))$ for some $1\leq i \leq m$, iff $$\M,w\Vdash[\pi](\eta([\beta_1](\psi_1^1,\ldots, \psi_{b_1}^1)),\ldots,\eta([\beta_m](\psi_1^m, \ldots,\psi_{b_m}^m)))$$ iff $\M,w\Vdash\eta(\phi)$.
+\end{proof}
+
+%Ignored for First submission
+%\nnote{New Lemma:}
+
+\begin{lemma}\label{if homomorphic and back condition on atomic then also on composed}
+    Let $\M$ and $\M'$ be $\tau$-models. Let $f:\M\to\M'$ be a mapping such that it satisfies the homomorphic condition (Definition~\ref{general homomorphism definition}) and the back condition (Definition~\ref{Bounded morphism - general}) w.r.t.\ the relations corresponding to basic modal terms. Then $f$ satisfies these conditions w.r.t.\ the relations corresponding to composed modal terms.
+\end{lemma}
+
+\begin{proof}
+    Let $\M=(W,\{ R_{\alpha} \}_{\alpha \in \mtt},V)$ and $\M'=(W',\{ R'_{\alpha} \}_{\alpha \in \mtt},V')$ be $\tau$-models. Let $f:\M\to\M'$ be such that for all atomic $\alpha\in\mtt$, letting $\rho(\alpha) =m$, if $R_\alpha w_0w_1\ldots w_m$ then $R'_\alpha f(w_0)f(w_1)\ldots f(w_m)$,
+    i.e., the homomorphic condition. Also let $f$ be such that all atomic $\alpha\in\mtt$ if $R'_\alpha f(w_0)w'_1\ldots w'_n$ then there exist $w_1,\ldots, w_n$ such that $R_\alpha ww_1\ldots w_n$ and $f(w_i) = w'_i$ (for $1\leq i \leq n)$, i.e., the back condition.
+    \par Now, we will prove our original statement by induction on $\mtt$ --- Definition~\ref{cep of modal term def}. We already have our base case as an assumption. Now let $\alpha\in\mtt$ be a composed modality. I.e., letting $\rho(\alpha) = n$, $\alpha = \pi(\beta_1,\ldots,\beta_{\rho(\pi)})$ and assume that $R_\alpha w_0w_1\ldots w_n$ and that the homomorphic condition is satisfied for any modality with $cep$ value less than $cep(\alpha)$. Since $R_\alpha w_0w_1\ldots w_n$, we can rewrite this (letting $\rho(\pi) = m$ and $\rho(\beta_i) = b_i$) as $$R_{\pi(\beta_1,\ldots,\beta_m)} w_0w^1_1\ldots w^1_{b_1} \ldots w^m_1\ldots w^m_{b_m}.$$ Therefore there are some states $v_1,\ldots,v_m$ such that $R_\pi w_0v_1\ldots v_m$ \text{and} $R_{\beta_i} v_iw^i_1\ldots w^i_{b_i}$ for all $1\leq i \leq m$. Now since $cep(\pi)<cep(\alpha)$ and $cep(\beta_i)<cep(\alpha)$ for all $1\leq i \leq m$, then by our induction hypothesis $R'_\pi f(w_0)f(v_1)\ldots f(v_m)$ \text{ and } $R'_{\beta_i} f(v_i)f(w^i_1)\ldots f(w^i_{b_i})$ for all $1\leq i \leq m$. Hence $$R'_{\pi(\beta_1,\ldots,\beta_m)} f(w_0)f(w^1_1)\ldots f(w^1_{b_1}) \ldots f(w^m_1)\ldots f(w^m_{b_m}).$$ Therefore $R'_\alpha f(w_0)f(w_1)\ldots f(w_n)$, satisfying the homomorphic condition.
+    \par Now, assume that the back condition is satisfied for any modality with $cep$ value less than $cep(\alpha)$. Also, assume $R'_\alpha f(w_0)w'_1\ldots w'_n$. This we can reindex the $w$'s (letting $\rho(\pi) = m$ and $\rho(\beta_i) = b_i$) as $$R'_{\pi(\beta_1,\ldots,\beta_m)} f(w_0)w'^1_1\ldots w'^1_{b_1} \ldots w'^m_1\ldots w'^m_{b_m}.$$ 
+    Therefore there are some states $v'_1,\ldots,v'_m$ such that $R'_\pi f(w_0)v'_1\ldots v'_m$ \text{and} $R'_{\beta_i} v'_iw'^i_1\ldots w'^i_{b_i}$ for all $1\leq i\leq m$. We can see that $cep(\pi)<cep(\alpha)$ and so by our induction hypothesis we can say that there are states $v_1,\ldots,v_m\in W$ such that $$R_\pi w_0v_1\ldots v_m \text{ and } f(v_i) = v'_i$$ for all $1\leq i\leq m$. This means that $R'_{\beta_i} f(v_i)w'^i_1\ldots w'^i_{b_i}$ for all $1\leq i\leq m$. Since $cep(\beta_i)<cep(\alpha)$ for all $i$'s, we can apply the induction hypothesis on each $i$. Therefore, there are states $w^i_1,\ldots, w^i_{b_i}\in W$ such that $$R_{\beta_i} v_iw^i_1\ldots w^i_{b_i} \text{ and } f(w^i_j) = w'^i_j$$ for all $1\leq i\leq m$, $1\leq j\leq b_i$. Now, from $R_\pi w_0v_1\ldots v_m$ and $R_{\beta_i} v_iw^i_1\ldots w^i_{b_i}$ for each $1\leq i\leq m$, we can conclude that $$R_{\pi(\beta_1,\ldots,\beta_m)} w_0w^1_1\ldots w^1_{b_1} \ldots w^m_1\ldots w^m_{b_m}.$$ This shows that the back condition is satisfied since (after reindexing back) we have $R_\alpha w_0w_1\ldots w_n$ and we have found $w_1,\ldots,w_n$ such that $f(w_i) = w'_i$ for all $1\leq i\leq n$.
+\end{proof}
+
+
+\par This is all we need for the pure modal language, and we will now introduce a tableau system for this language.

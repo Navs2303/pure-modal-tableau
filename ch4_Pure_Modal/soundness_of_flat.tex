@@ -1,0 +1,200 @@
+\section{Soundness of \pmt}\label{soundness section}
+
+\par This section is dedicated to proving the soundness of $\pmt$. We need to prove that $\Gamma \vdash_\pmt \phi$ implies $\Gamma\Vdash \phi$. So we may assume $\Gamma \vdash_\pmt \phi$. I.e., when any saturated tableau with $\{\neg\phi:x\}\cup\{\gamma_i:x\mid\gamma_i\in\Gamma\}$ in the root, is closed. This means that, according to Definition~\ref{labelled tableau def}, each branch contains both $\psi:y$ and $\neg\psi:y$ or it contains $\neg[\iot{0}]:y$ for some $\psi\in\Lp, y\in\NAMES$. Now, to prove soundness, we have to prove that what is in the root, i.e., $\Gamma \cup \{\neg \phi\}$, is also not satisfiable. So conversely, we can prove soundness by proving that if $\Gamma \cup \{\neg \phi\}$ is satisfiable, then at least one of the leaf nodes is satisfiable.
+
+
+\begin{theorem}\label{Soundness of PMT - theorem}
+    $\pmt$ is sound. I.e., $\Gamma \vdash_\pmt \phi$ implies $\Gamma\Vdash \phi$.
+\end{theorem}
+
+\begin{proof}
+    \par To prove the soundness of $\pmt$, we prove that each rule preserves satisfiability from top to bottom. Therefore if we have $\Gamma \vdash_\pmt \phi$ and our rules preserve satisfiability, then $\Gamma\Vdash \phi$.
+
+\par So let's prove the soundness of each rule. Note, Definition~\ref{satisfiability clauses - pure} and Definition~\ref{sat of Gamma pure} will be used in each of these proofs. We let $\M = (W,\{ R_{\alpha} \}_{\mtt},V)$ be an arbitrary $\mtt$-model.
+
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{}
+
+Negation Elimination: \\
+\begin{tableau}
+    {}
+    [\Delta \coms \neg\neg\phi :x
+    [\Delta \coms \phi: x ,just={$(\neg E)$}]]
+\end{tableau}
+\end{center}\
+
+\par Assume $\Delta \cup \{\neg\neg\phi:x\}$ is satisfied in $\M$. We need to show that $\phi:x$ is satisfied in $\M$. So since $\{\neg\neg\phi:x\}$ is satisfied in $\M$, then $\M,\mathsf{S}(x) \Vdash \neg\neg\phi$, then $\M,\mathsf{S}(x) \not\Vdash \neg\phi$. Therefore $\M,\mathsf{S}(x) \Vdash \phi$. Thus $\Delta \cup \{\phi:x\}$ is satisfied in $\M$.
+
+\begin{center}
+Diamond Elimination:\\
+%\resizebox{116mm}{!}{
+\renewcommand*\linenumberstyle[1]{}
+    \begin{tableau}
+    {vertical/.style={ %define style for phantom node
+    %with vertical edge drawn from it
+    before drawing tree={not ignore edge, edge=draw},
+    },}
+    [\Delta \coms \neg\lsb\alpha\rsb(\phi_1\text{
+    ,\,} \phi_2\coms \ldots\coms \phi_{m}):x
+    [\Delta \coms R_\alpha xy_1\ldots y_m \coms \neg\phi_1 :y_1 \coms \ldots \coms \neg\phi_m :y_m ,just={$(\langle\alpha\rangle E)$}
+    ]]
+    \end{tableau}
+    \par Where $y_1,\ldots,y_m\in\NAMES$ that are distinct from $\NamD \cup \{x\}$.
+\end{center}\
+\par Let $\Delta' = \Delta \cup \{\neg\lsb\alpha\rsb(\phi_1\text{
+    ,\,} \phi_2\coms \ldots\coms \phi_{m}):x\}$ and $\Delta'' = \Delta \cup \{R_\alpha xy_1\ldots y_m \coms \neg\phi_1 :y_1 \coms \ldots \coms \neg\phi_m :y_m\}$.
+\par Now, assume $\Delta'$ is satisfied in $\M$. This means that $\M, \mathsf{S}(x) \Vdash \neg[\alpha](\phi_1,\phi_2, \ldots, \phi_{m})$. Then $\M, \mathsf{S}(x) \not\Vdash [\alpha](\phi_1,\phi_2, \ldots, \phi_{m})$. I.e., it is not the case that for all $z_1,\ldots, z_m \in W$ with $R_\alpha^{\M}(\mathsf{S}(x)z_1\ldots z_m)$ we have $\M,z_1\Vdash \phi_1$ or $\M,z_2\Vdash \phi_2$ or $\cdots$ or $\M,z_m\Vdash \phi_m$. Therefore, we have that there exists $z_1\ldots z_m \in W$ with $R_\alpha^{\M}(\mathsf{S}(x)z_1\ldots z_m)$ such that $\M,z_1\not\Vdash \phi_1$ and $\M,z_2\not\Vdash \phi_2$ and $\cdots$ and $\M,z_m\not\Vdash \phi_m$. I.e., there exists $z_1\ldots z_m \in W$ with $R_\alpha^{\M}(\mathsf{S}(x)z_1\ldots z_m)$ such that $\M,z_1\Vdash \neg\phi_1$ and $\M,z_2\Vdash \neg\phi_2$ and $\cdots$ and $\M,z_m\Vdash \neg\phi_m$.
+\par Now to prove that $\M$ satisfies $\Delta''$ we must find mappings $\mathsf{S}'$ and $\mathsf{R}'$ such that it satisfies Definition~\ref{sat of Gamma pure}. To do this, we let $\mathsf{R}'\rvert_{\text{RNames}(\Delta')}= \mathsf{R}\rvert_{\text{RNames}(\Delta')}$ and set $\mathsf{R'}(R_\alpha) = R_\alpha^\M$. 
+%Ignored for First submission
+%\nnote{Please check if $\mathsf{R}$ is correct.}
+We also let $\mathsf{S}'$ be such that: $\mathsf{S}'\rvert_{\text{Names}(\Delta')}= \mathsf{S}\rvert_{\text{Names}(\Delta')}$ and set $\mathsf{S}'(y_i) = z_i$ for $1\leq i \leq m$, since all $y_i$'s are new. Using $\mathsf{R}'$ and $\mathsf{S}'$, we can conclude $\M$ satisfies $\Delta''$ and hence the rule is sound.
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{}
+Box Elimination:\\
+%\resizebox{116mm}{!}{
+    \begin{tableau}
+    {vertical/.style={ %define style for phantom node
+    %with vertical edge drawn from it
+    before drawing tree={not ignore edge, edge=draw},
+    },}
+    [\Delta \coms \lsb\alpha\rsb(\phi_1\coms \phi_2\coms \ldots\coms \phi_{m}):x\coms R_\alpha xy_1\ldots y_m
+    [ \Delta' \coms \phi_1 :y_1
+    ]
+    [\cdots
+    ]
+    [ \Delta' \coms \phi_m :y_m ,just={$([\alpha]E)$}
+    ]]
+    \end{tableau}
+    %}
+    \par Where $\Delta'$ stands for $\Delta \coms \lsb\alpha\rsb(\phi_1\coms \phi_2\coms \ldots\coms \phi_{m}):x\coms R_\alpha xy_1\ldots y_m$
+\\
+\end{center}\
+\par This rule branches, so to prove soundness, we need to show that assuming the premise is satisfied in $\M$ results in at least one of the conclusions being satisfied in $\M$.
+\par Assume $\Delta \cup \{\lsb\alpha\rsb(\phi_1\coms \phi_2\coms \ldots\coms \phi_{m}):x\coms R_\alpha xy_1\ldots y_m\}$ is satisfied in $\M$. Thus $\M, \mathsf{S}(x) \Vdash [\alpha](\phi_1,\phi_2,\ldots,\phi_m)$, and since we also have $R_\alpha(xy_1\ldots y_m)$ then, $(\mathsf{S}(x),\mathsf{S}(y_1),\ldots,\mathsf{S}(y_m)) \in R_\alpha^{\M}$, i.e., $R_\alpha^{\M}(\mathsf{S}(x)\mathsf{S}(y_1)\ldots\mathsf{S}(y_m))$. Therefore, we have $\M, \mathsf{S}(y_1) \Vdash \phi_1$ or $\M, \mathsf{S}(y_2)\Vdash \phi_2$ or $\cdots$ or $ \M, \mathsf{S}(y_m)\Vdash \phi_m$. And so, at least one of these is true, hence the rule is sound.
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{}
+    $\iota_n$-relation on a state:\\
+    For some $0 \leq i,j \leq n\in\{1,2\}, i\not=j
+    $\\
+\begin{tableau}
+    {}
+    [\Delta \coms  R_{\iota_n}(x_0\ldots x_n) \coms  \phi :x_i
+    [\Delta \coms   R_{\iota_n}(x_0\ldots x_n) \coms  \phi :x_i \coms  \phi :x_j ,just={$(R_{\iota_n}x)$}
+    ]]
+\end{tableau}\\
+\end{center}\
+\par Assume $\Delta \cup \{R_{\iota_n}(x_0\ldots x_n) \coms \phi :x_i\}$ ($0\leq i\leq n$) is satisfied in $\M$. Then we need to show that \{$\phi:x_j$\} $(0\leq j\leq n, i\not= j)$ is satisfied in $\M$. Now by assumption, we have $\M, \mathsf{S}(x_i) \Vdash \phi$, we also have $R_{\iota_n}(x_0\ldots x_n)$ so this means that $(\mathsf{S}(x_0),\ldots,\mathsf{S}(x_n)) \in R_{\iota_n}^{\M} = \{(w,\ldots,w)\mid w\in W\}$. Therefore $\mathsf{S}(x_0) = \cdots =\mathsf{S}(x_n)$. So, $\M, \mathsf{S}(x_j) \Vdash \phi$.
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{}
+    $\iota_n$-relation on any other relation:\\
+    For some $0 \leq i,j \leq n\in\{1,2\}, i\not=j $\\
+\begin{tableau}
+    {}
+    [\Delta \coms  R_{\iota_n}(x_0\ldots x_n) \coms  R_\alpha(b_0b_1\ldots x_i \ldots b_{m})
+    [\Delta \coms R_{\iota_n}(x_0\ldots x_n) \coms  R_\alpha(b_0b_1\ldots x_i \ldots b_{m})  \coms  R_\alpha(b_0b_1\ldots x_j \ldots b_{m}) ,just={$(R_{\iota_n}R_\alpha)$}
+    ]]
+\end{tableau}\\
+\end{center}\
+\par Assume $\Delta \cup \{R_{\iota_n}(x_0\ldots x_n) \coms R_\alpha(b_0b_1\ldots x_i \ldots b_{m})\}$ ($0\leq i\leq n$) is satisfied in $\M$, then we need to show that $\{R_\alpha(b_0b_1\ldots x_j \ldots b_{m})\}$ is satisfied in $\M$. Now, by our assumption,
+ $(\mathsf{S}(b_0),\mathsf{S}(b_1),\ldots,\mathsf{S}(x_i),
+ \\ \ldots,\mathsf{S}(b_m)) \in R_\alpha^{\M}$, and $(\mathsf{S}(x_0),\ldots,\mathsf{S}(x_n)) \in R_{\iota_n}^{\M}$. 
+ Therefore $\mathsf{S}(x_0) = \cdots =\mathsf{S}(x_n)$. So, $(\mathsf{S}(b_0),\mathsf{S}(b_1),
+ \\ \ldots,\mathsf{S}(x_j),\ldots,\mathsf{S}(b_m)) \in R_\alpha^{\M}$ and thus $\{R_\alpha(b_0b_1\ldots x_j \ldots b_{m})\}$ is satisfied in $\M$.
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{}
+    $\iota_1$-relation introduction:\\
+    For some $x\in\NamD$\\
+\begin{tableau}
+    {}
+    [\Delta 
+    [\Delta \coms R_{\iota_1}(xx), just={$(R_{\iota_1}I)$}
+    ]]
+\end{tableau}
+
+\end{center}
+
+\par Assume that $\Delta$ is satisfied in $\M$. We need to show that $\{\riO(xx)\}$ is satisfied in $\M$. Since we have that $x\in \NamD$, then we know that $\ssf(x)\in W$. Therefore $(\ssf(x),\ssf(x))\in R_{\iot{1}}^\M$. 
+%Ignored for First submission
+%\nnote{Is there a better proof?}
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{}
+    $\iota_2$-relation introduction:\\
+    For some $x\in\NamD$\\
+\begin{tableau}
+    {}
+    [\Delta 
+    [\Delta \coms R_{\iota_2}(xxx), just={$(R_{\iota_2}I)$}
+    ]]
+\end{tableau}
+\end{center}
+
+\par Assume that $\Delta$ is satisfied in $\M$. We need to show that $\{\riT(xxx)\}$ is satisfied in $\M$. Since we have that $x\in \NamD$, then we know that $\ssf(x)\in W$. Therefore $(\ssf(x),\ssf(x),\ssf(x))\in R_{\iot{2}}^\M$. 
+%Ignored for First submission
+%\nnote{Is there a better proof?}
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{}
+Relation Reduction:\\
+\begin{tableau}
+    {vertical/.style={ %define style for phantom node
+    %with vertical edge drawn from it
+    before drawing tree={not ignore edge, edge=draw},
+    },}
+    [\Delta \coms R_{\alpha(\beta_1, \beta_2, \ldots, \beta_m)}(xx_1^1x_2^1\ldots x_{\rho(\beta_1)}^1 x_1^2 \ldots x_{\rho(\beta_2)}^2 \ldots x_1^m \ldots x_{\rho(\beta_m)}^m)
+    [
+    [\Delta \coms R_{\alpha}(xy_1 \ldots y_m) \coms R_{\beta_1}(y_1x_1^1 \ldots x_{\rho(\beta_1)}^1) \coms \ldots \coms R_{\beta_m}(y_m x_1^m \ldots x_{\rho(\beta_m)}^m) ,just={$(RR)$}
+    ]]]
+\end{tableau}\\
+Where $y_1,\ldots,y_m\in\NAMES$ that are distinct from $\NamD \cup \{x,x_1^1,x_2^1,\ldots, x_{\rho(\beta_1)}^1, x_1^2, \ldots, x_{\rho(\beta_2)}^2, \ldots, x_1^m, \ldots, x_{\rho(\beta_m)}^m\}$
+\\i.e., distinct from any names occurring in the premise.
+\end{center}\
+\par We will denote 
+$\Delta \cup \{R_{\alpha(\beta_1, \beta_2, \ldots, \beta_m)}(xx_1^1x_2^1\ldots x_{\rho(\beta_1)}^1 x_1^2 \ldots x_{\rho(\beta_2)}^2 \ldots x_1^m \ldots x_{\rho(\beta_m)}^m)\}$ = $\Delta'$ and
+$\Delta\, \cup$ \\ $ \{R_{\alpha}(xy_1 \ldots y_m) \coms R_{\beta_1}(y_1x_1^1 \ldots x_{\rho(\beta_1)}^1) \coms \ldots \coms R_{\beta_m}(y_m x_1^m \ldots x_{\rho(\beta_m)}^m)\} = \Delta''$.
+\par Assume $\Delta'$ is satisfied in $\M$, then we have that $$R^{\M}_{\alpha(\beta_1, \beta_2, \ldots, \beta_m)}(\mathsf{S}(x)\mathsf{S}(x_1^1)\mathsf{S}(x_2^1)\ldots \mathsf{S}(x_{\rho(\beta_1)}^1) \mathsf{S}(x_1^2) \ldots \mathsf{S}(x_{\rho(\beta_2)}^2) \ldots \mathsf{S}(x_1^m) \ldots \mathsf{S}(x_{\rho(\beta_m)}^m)).$$ This means that there are states $z_1,z_2,\ldots, z_m \in W$ where, letting $\rho(\beta_i)=b_i$, $$R^{\M}_{\alpha}(\mathsf{S}(x)z_1\ldots z_m) \text{ and } R^{\M}_{\beta_i}(z_i\mathsf{S}(x^i_1)\ldots \mathsf{S}(x^i_{b_i}))$$ for all $1\leq i\leq m$.
+\par Now we claim that $\Delta''$ is satisfied in $\M$. From the assumption we have that $\Delta$ is satisfied in $\M$, to show that $\{R_{\alpha}(xy_1 \ldots y_m) \coms R_{\beta_1}(y_1x_1^1 \ldots x_{\rho(\beta_1)}^1) \coms \ldots \coms R_{\beta_m}(y_m x_1^m \ldots x_{\rho(\beta_m)}^m)\}$ is satisfied in $\M$ we create mappings $\mathsf{R}'$ and $\mathsf{S}'$. So, we let $\mathsf{R}'= \mathsf{R}$. We can do this because in Definition~\ref{RNames function definition} of RNames if $\alpha(\beta_1,\ldots,\beta_m)\in\RnamD$ then $\alpha,\beta_1,\ldots,\beta_m\in\RnamD$. We also let $\mathsf{S}'$ be such that: $\mathsf{S}'\rvert_{\text{Names}(\Delta')}= \mathsf{S}\rvert_{\text{Names}(\Delta')}$ and set $\mathsf{S}'(y_i) = z_i$ for $1\leq i \leq m$, since all $y_i$'s are new. Using $\mathsf{R}'$ and $\mathsf{S}'$, we can conclude $\M$ satisfies $\Delta''$ and hence the rule is sound.
+
+
+%\par \textbf{For completeness:}
+%\par We will denote\\
+%$\Delta \cup \{R_{\alpha(\beta_1, \beta_2, \ldots, \beta_m)}(xx_1^1x_2^1\ldots x_{\rho(\beta_1)}^1 x_1^2 \ldots x_{\rho(\beta_2)}^2 \ldots x_1^m \ldots x_{\rho(\beta_m)}^m)\}$ = $\Delta'$ and\\
+%$\Delta \cup \{R_{\alpha}(xy_1 \ldots y_m) \coms R_{\beta_1}(y_1x_1^1 \ldots x_{\rho(\beta_1)}^1) \coms \ldots \coms R_{\beta_m}(y_m x_1^m \ldots x_{\rho(\beta_m)}^m)\} = \Delta''$.
+%\par Assume $\Delta''$ is satisfied in $\M$, then we have that $R_{\alpha}^{\M} (\mathsf{S}(x)\mathsf{S}(y_1) \ldots \mathsf{S}(y_m)) \coms\\ R_{\beta_1}^{\M}(\mathsf{S}(y_1)\mathsf{S}(x_1^1) \ldots \mathsf{S}(x_{\rho(\beta_1)}^1)) \coms \ldots \coms R_{\beta_m}^{\M}(\mathsf{S}(y_m) \mathsf{S}(x_1^m) \ldots \mathsf{S}(x_{\rho(\beta_m)}^m))$ and hence by definition $R^{\M}_{\alpha(\beta_1, \beta_2, \ldots, \beta_m)}(\mathsf{S}(x)\mathsf{S}(x_1^1)\mathsf{S}(x_2^1)\ldots \mathsf{S}(x_{\rho(\beta_1)}^1) \mathsf{S}(x_1^2) \ldots \mathsf{S}(x_{\rho(\beta_2)}^2) \ldots \mathsf{S}(x_1^m) \ldots \mathsf{S}(x_{\rho(\beta_m)}^m)) $.
+%\par Now we claim that $\Delta'$ is satisfied in $\M$. From the assumption we have that $\Delta$ is satisfied. To show that $\Delta'$ is satisfied we create maps $\mathsf{R}'$ and $\mathsf{S}'$. So, we let $\mathsf{R}'=\mathsf{R}$ and $\mathsf{S}'$ be such that $\mathsf{S}' = \mathsf{S}\mid_{\text{Names}(\Delta'')}$ and using these maps we can conclude $\M$ satisfies $\Delta'$ and hence the rule is complete.
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{}
+Boxed Modality Distribution:\\
+\begin{tableau}
+    {vertical/.style={ %define style for phantom node
+    %with vertical edge drawn from it
+    before drawing tree={not ignore edge, edge=draw},
+    },}
+    [\Delta \coms \lsb\alpha(\beta_1\coms \ldots \coms\beta_{\rho(\alpha)})\rsb(\phi_1^1\coms\phi_2^1\coms \ldots \coms\phi_{\rho(\beta_1)}^1\coms \phi_1^2\coms \ldots \coms\phi_{\rho(\beta_2)}^2\coms \ldots \coms \phi_1^m \coms \ldots \coms\phi_{\rho(\beta_m)}^m):x
+    [
+    [\Delta \coms \lsb\alpha\rsb(\lsb\beta_1\rsb(\phi_1^1\coms\phi_2^1\coms \ldots \coms\phi_{\rho(\beta_1)}^1)\coms \ldots \coms \lsb\beta_{m}\rsb(\phi_1^m \coms \ldots \coms\phi_{\rho(\beta_m)}^m)):x ,just={$([\alpha(\beta)]D)$}
+    ]]]
+\end{tableau} 
+\end{center}\
+
+%\par Assume that $\M$ satisfies\\ $\Delta \,\cup\, $$\{\lsb\alpha(\beta_1,\ldots\coms\beta_{\rho(\alpha)})\rsb(\phi_1^1\coms\phi_2^1\coms\ldots \coms\phi_{\rho(\beta_1)}^1\coms \phi_1^2\coms \ldots \coms\phi_{\rho(\beta_2)}^2\coms \ldots\coms \phi_1^m \coms\ldots \coms\phi_{\rho(\beta_m)}^m):x\}$, now let $z_1^1,z_2^1,\ldots,z_{\rho(\beta_1)}^1,z_1^2,\ldots,z_{\rho(\beta_2)}^2,\ldots,z_1^{m},\ldots,z_{\rho(\beta_m)}^m \in W$ such that \\
+%$R_{\alpha(\beta_1\coms\ldots\coms\beta_{\rho(\alpha)})}^{\M}(\mathsf{S}(x)z_1^1z_2^1\ldots z_{\rho(\beta_1)}^1z_1^2\ldots z_{\rho(\beta_2)}^2\ldots z_1^{m}\ldots z_{\rho(\beta_m)}^m)$ then we have that \\$\bigvee_{i=1}^m\bigvee_{j=1}^{\rho(\beta_i)} (\M, z_j^i \Vdash \phi_j^i)$.
+%\par Now, we also have (from Definition~\ref{tau-frame}) that since\\ $(\mathsf{S}(x),z_1^1,z_2^1,\ldots,z_{\rho(\beta_1)}^1,z_1^2,\ldots,z_{\rho(\beta_2)}^2,\ldots,z_1^{m},\ldots,z_{\rho(\beta_m)}^m) \in R_{\alpha(\beta_1\coms\ldots\coms\beta_{\rho(\alpha)})}^{\M}$, there are states $y_1,y_2,\ldots,y_m$ such that $R_\alpha^{\M} (\mathsf{S}(x)y_1\ldots y_m)$ and $\bigwedge_{i=1}^mR_{\beta_i}^{\M}(y_iz^i_1\ldots z^i_{\rho(\beta_i)})$.
+%\par So, for at least one $i$, ($1\leq i\leq m$) we have that $R_{\beta_i}^{\M}(y_iz^i_1\ldots z^i_{\rho(\beta_i)})$ and $\bigvee_{j=1}^{\rho(\beta_i)} (\M, z_j^i \Vdash \phi_j^i)$. Therefore, we can say that $\M, y_i \Vdash [\beta_i](\phi_1^i,\ldots,\phi_{\rho(\beta_i)}^i)$ for at least one $i$.
+%\par Now that we have $\bigvee_{i=1}^m(\M, y_i \Vdash [\beta_i](\phi_1^i,\ldots,\phi_{\rho(\beta_i)}))$ and $R_\alpha^{\M} (\mathsf{S}(x)y_1\ldots y_m)$, we can conclude that $\M, \mathsf{S}(x)\Vdash\lsb\alpha\rsb(\lsb\beta_1\rsb(\phi_1^1\coms\phi_2^1\coms\ldots \coms\phi_{\rho(\beta_1)}^1)\coms \ldots \coms \lsb\beta_{m}\rsb(\phi_1^m \coms\ldots \coms\phi_{\rho(\beta_m)}^m))$. Thus the rule is sound.
+%\par\textcolor{red}{redoing the proof}
+
+\par Assume that $\M$ satisfies $\Delta \,\cup\, $$\{\lsb\alpha(\beta_1, \ldots ,\beta_{\rho(\alpha)})\rsb(\phi_1^1,\phi_2^1, \ldots ,\phi_{\rho(\beta_1)}^1, \phi_1^2, \ldots ,\phi_{\rho(\beta_2)}^2, \ldots, \phi_1^m , \ldots , \\ \phi_{\rho(\beta_m)}^m):x\}$, therefore, $$\M, \mathsf{S}(x) \Vdash \lsb\alpha(\beta_1,\ldots,\beta_{\rho(\alpha)})\rsb(\phi_1^1,\phi_2^1, \ldots ,\phi_{\rho(\beta_1)}^1, \phi_1^2, \ldots ,\phi_{\rho(\beta_2)}^2, \ldots, \phi_1^m ,\ldots , \phi_{\rho(\beta_m)}^m).$$
+\par Now, for the sake of contradiction assume that $$\M, \mathsf{S}(x) \not\Vdash \lsb\alpha\rsb(\lsb\beta_1\rsb(\phi_1^1,\phi_2^1, \ldots ,\phi_{\rho(\beta_1)}^1), \ldots , \lsb\beta_{m}\rsb(\phi_1^m , \ldots ,\phi_{\rho(\beta_m)}^m)).$$ This means that there exists states $y_1,\ldots, y_m\in W$ with $R^{\M}_\alpha (\mathsf{S}(x)y_1\ldots y_m)$ such that $\M, y_i \not\Vdash [\beta_i](\phi^i_1,\ldots,\phi^i_{\rho(\beta_m)})$, for all $1\leq i\leq m$. I.e., that for each $1 \leq i \leq m$ we have that $\M, y_i \not\Vdash [\beta_i](\phi^i_1,\ldots,\phi^i_{\rho(\beta_m)})$. This means that (for each $1 \leq i \leq m$) there exists states $z^i_1,\ldots, z^i_{\rho(\beta_i)} \in W$ with $R^{\M}_{\beta_i}(y_iz^i_1\ldots z^i_{\rho(\beta_i)})$ such that $\M, z^i_j \not\Vdash \phi^i_j$, for all $1\leq j\leq\rho(\beta_i)$.
+\par So this means that we have states $z_1^1,z_2^1,\ldots,z_{\rho(\beta_1)}^1,z_1^2,\ldots,z_{\rho(\beta_2)}^2,\ldots,z_1^{m},\ldots,z_{\rho(\beta_m)}^m \in W$ such that $\M, z^i_j \not\Vdash \phi^i_j$, for all $1\leq j\leq \rho(\beta_i)$, $1\leq i\leq m$. But also $R^{\M}_\alpha(\mathsf{S}(x)y_1\ldots y_m)$ and that $R^{\M}_{\beta_i}(y_iz^i_1\ldots z^i_{\rho(\beta_i)})$, for all $1\leq i\leq m$. This means that $$R^{\M}_{\alpha(\beta_1,\ldots,\beta_m)}(\mathsf{S}(x)z_1^1z_2^1\ldots z_{\rho(\beta_1)}^1z_1^2\ldots z_{\rho(\beta_2)}^2\ldots z_1^{m}\ldots z_{\rho(\beta_m)}^m).$$ And since we know $$\M, \mathsf{S}(x) \Vdash \lsb\alpha(\beta_1,\ldots,
+\beta_{\rho(\alpha)})\rsb(\phi_1^1,\phi_2^1, \ldots ,\phi_{\rho(\beta_1)}^1, \phi_1^2, \ldots ,\phi_{\rho(\beta_2)}^2, \ldots , \phi_1^m ,\ldots ,\phi_{\rho(\beta_m)}^m),$$ by its semantics we have $\M, z^i_j \Vdash \phi^i_j$, for some $1\leq j\leq\rho(\beta_i)$, $1\leq i\leq m$. which contradicts the fact that $\M, z^i_j \not\Vdash \phi^i_j$, for all $1\leq j\leq\rho(\beta_i)$, $1\leq i\leq m$.
+\par Thus $\M, \mathsf{S}(x) \Vdash \lsb\alpha\rsb(\lsb\beta_1\rsb(\phi_1^1,\phi_2^1,\ldots ,\phi_{\rho(\beta_1)}^1), \ldots , \lsb\beta_{m}\rsb(\phi_1^m ,\ldots ,\phi_{\rho(\beta_m)}^m))$ and hence the rule is sound.
+
+\par Thus, since every rule is sound, we can conclude that $\pmt$ is a sound set of tableau rules.
+\end{proof}

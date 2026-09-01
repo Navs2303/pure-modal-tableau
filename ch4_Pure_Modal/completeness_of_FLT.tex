@@ -1,0 +1,231 @@
+\section{Completeness of \pmt}\label{completeness section}
+
+%\subsection{Preliminary definitions}
+
+\par In this section, we prove the completeness of $\pmt$. Instead of showing that $\pmt$ is complete by showing $\Gamma\Vdash \phi$ implies $\Gamma \vdash_\pmt \phi$, we will be proving an equivalent form of completeness. For this, we need to define what $\pmt$-consistency is.
+
+%\par (\textcolor{blue}{Note:} \textcolor{red}{Text in red: To be checked}, \textcolor{blue}{Text in blue: Notes for you to read}, \textcolor{green}{Text in green: Notes for me}) 
+
+%\par \textcolor{blue}{Do we still need to show that satisfaction is preserved upward (for each rule)?}
+
+\begin{definition}\label{flt-inconsistent}
+    \textbf{(\pmt-inconsistent)} Let $\Gamma$ be a $\tTh$. Then we say that $\Gamma$ is \textit{\pmt-inconsistent} if the tableau for $\Gamma$ closes. And $\gt$ is said to be \textit{\pmt-consistent} if this is not the case, i.e., it contains an open branch.
+\end{definition}
+
+%\begin{definition}\label{completeness 1}
+%    \textbf{Completeness (1)}: The logic $\pmt$ is called \textit{strongly complete} with respect to a class of frames $\mathsf{F}$ if for $\tTh$ $\Gamma\cup\{\phi\}$ 
+%    \begin{equation*}
+%        \Gamma\Vdash_\mathsf{F} \phi \text{ implies } \Gamma\vdash_\pmt \phi
+%    \end{equation*}
+%\end{definition}
+
+%\par We also have the notion of \textit{weak completeness} which is a special case of strong completeness, where we set $\Gamma$ to the empty set $\varnothing$. However, we will make use of an equivalent definition of strong completeness.
+
+%\begin{definition} \label{completeness 2}
+%    \textbf{Completeness (2):} A  logic $\pmt$ is \textit{complete} if for every $\tTh$ $\Gamma$:
+%    \begin{equation*}
+%        \text{If }\Gamma \text{ is } \pmt\text{-consistent} \text{ then }  \Gamma \text{ is satisfiable}.
+%    \end{equation*}
+%\end{definition}
+
+%\begin{proposition}
+%    Completeness (1) (Def.~\ref{completeness 1}) iff Completeness (2) (Def.~\ref{completeness 2})
+%\end{proposition}
+
+%\begin{proof}
+%    \par $(\implies)$ We assume completeness (1) is true and (using the contrapositive) let $\Gamma\cup\{\neg\phi\}$ be unsatisfiable. This means that there is no model that satisfies $\Gamma$ and $\neg\phi$ as well. This means that for every model if $\Gamma$ is satisfied then $\phi$ is also satisfied. I.e., $\Gamma\Vdash_\mathsf{F}\phi$, and so through completeness (1) we have that $\Gamma\vdash_\pmt\phi$ this means that the tableau for $\Gamma\cup\{\neg\phi\}$ closes and so $\Gamma\cup\{\neg\phi\}$ is $\pmt$-inconsistent.\\
+%    $(\impliedby)$ We assume completeness (2) and (using the contrapositive) assume that $\Gamma\not\vdash_\pmt\phi$. This means that the tableau with $\Gamma\cup\{\neg\phi\}$ as its root has an open branch. This means that $\Gamma\cup\{\neg\phi\}$ is $\pmt$-consistent. So, by completeness (2) we have that $\Gamma\cup\{\neg\phi\}$ is satisfiable and hence $\Gamma\not\Vdash_\mathsf{F}\phi$ for any class of frames $\mathsf{F}$.
+    %\par We assume completeness (2) is true and assume $\Gamma\Vdash_\mathsf{F}\phi$. This means that $\Gamma\cup\{\phi\}$ is unsatisfiable. Now using the contrapositive of completeness (2) we have that 
+%\end{proof}
+
+
+
+
+%\begin{definition}
+%    \textbf{Set branch:} Let \textbf{T} be a tableau, \textbf{b} be a branch on the tableau and $n_1,n_2,\ldots,n_m$ be the nodes on said branch. We define the set branch of \textbf{b} as the union of the sets $\Gamma_i$ in each $n_i$ in branch \textbf{b}.
+%\end{definition}
+
+\par An equivalent form of completeness is to prove that every \pmt-consistent $\tTh$ is satisfiable. This equivalence is analogous to what was proved in Proposition~\ref{completeness equivalence proposition}. To prove that every \pmt-consistent $\tTh$ is satisfiable, we need to be able to find the correct model that satisfies a \pmt-consistent $\tTh$. Here, we construct the pre-model of such a model. 
+%Ignored for First submission
+%\nnote{Is this paragraph correct? (not of priority)}
+
+%\textcolor{green}{Rules for closing defined in Section TB system for BML (Section 4)}
+
+%\subsection{Road to completeness}
+
+%Ignored for First submission
+%\nnote{Is this next definition correct?}
+\begin{definition}\label{pre flt model}
+    \textbf{(Pre $\pmt$ model)} Let $\Gamma$ be a \pmt-consistent $\tTh$ and $\tb{b}$ be an open downward saturated open branch on its tableau. Let $\Delta = \Ub$ then the \textit{pre $\pmt$ model} $\Mplus= (W_+,R^{\Mplus}_{\alpha\in\mtt},V^{\Mplus}(p))$ of $\Delta$ is defined as follows:
+    \begin{enumerate}
+        \item $W_+=\NamD$,
+        \item $R^\Mplus_{\alpha\in\mtt} = \{(x,y_1,\ldots,y_m) \in \NamD^{m+1} \mid \alpha \text{ is atomic}, \rho(\alpha) = m, R_\alpha xy_1\ldots y_m\in\Delta\}$,
+        \item $V^\Mplus (p) = \{x\in\NamD\mid p:x\in\Delta\}$.
+    \end{enumerate}
+    While also defining $\ssf:x\mapsto x$ and $\rsf: R_\alpha\mapsto R_\alpha^\Mplus$. For the relations corresponding to composite terms, they are generated by the appropriate composition of atomic relations. 
+\end{definition}
+
+%Ignored for First submission
+%\nnote{New paragraph:}
+\par We call this a pre-model because the interpretation of the $\iota$ terms may not be correct. The correct interpretation would be that any states that are related under an $\iota$ relation would be the same state in the model. Our pre $\pmt$ model here will create distinct states for states related under an $\iota$ relation. We can construct the correct model by quotienting over $W^+$. This is done in Definition~\ref{canonical flt model}. For now, we prove that if a $\tTh$ $\gt$ is \pmt-consistent then it is satisfiable in the pre $\pmt$ model, but first we prove two lemmas.  
+
+ \begin{lemma} \label{relations in gamma iff in model}
+        Let \textbf{b} be an open downward saturated branch and let $\Delta=\Ub$. Let $\Mplus$ be the pre $\pmt$ model of $\Delta$. Then, $R_\alpha wv_1\ldots v_n \in \Delta$ if and only if $ R_\alpha^{\Mplus}wv_1\ldots v_n$ for all relational atoms where $\alpha$ is atomic.
+    \end{lemma}
+    \begin{proof}
+        This follows from Definition~\ref{pre flt model}. 
+        %Ignored for First submission
+%\nnote{Does it work now?}
+    \end{proof}
+
+ \begin{lemma} \label{relations in gamma are in model}
+        Let \textbf{b} be an open downward saturated branch and let $\Delta=\Ub$. Let $\Mplus$ be the pre $\pmt$ model of $\Delta$. For all relational atoms (specifically the ones that are composite relations), if $R_\alpha wv_1\ldots v_n\in \Delta$, then $ R_\alpha^{\Mplus}wv_1\ldots v_n$.
+    \end{lemma}
+
+\begin{proof}
+        We prove this by induction on $\alpha$. \textit{Base case:} Proven in Lemma~\ref{relations in gamma iff in model}.
+        \par Now we assume the claim holds true for $R_\alpha$ ($\rho(\alpha)=m>0$) and $R_{\beta_i}$ for all $1\leq i\leq m$ and let $\rho(\beta_i) =b_i$. We are required to prove the claim holds for $R_{\alpha(\beta_1,\ldots,\beta_m)}$. Now if $R_{\alpha(\beta_1,\ldots,\beta_m)}wv_1^1\ldots v_{b_1}^1 \ldots v_1^m\ldots v_{b_m}^m\in\Delta$ this implies (by downward saturation and $(RR)$) that there are $u_1,\ldots, u_m\in\NamD$ such that $R_\alpha wu_1\ldots u_m\in\Delta$ and $R_{\beta_i}u_iv_1^i\ldots v_{b_i}^i\in\Delta$ for all $1\leq i\leq m$. So by our IH, $R^{\Mplus}_\alpha wu_1\ldots u_m$ and $R^{\Mplus}_{\beta_i}u_iv_1^i\ldots v_{b_i}^i$ for all $1\leq i\leq m$. Hence, (semantically) $R^{\Mplus}_{\alpha(\beta_1,\ldots,\beta_m)}wv_1^1\ldots v_{b_1}^1 \ldots v_1^m\ldots v_{b_m}^m$.
+    \end{proof}
+
+\begin{theorem}\label{completeness of flt theorem}
+    If a $\tTh$ $\gt$ is \pmt-consistent, then it is satisfiable in a pre $\pmt$ model.
+\end{theorem}
+
+\begin{proof}
+    \par Let $\gt$ be a $\pmt$-consistent $\tau$-theory. Then, after creating a tableau for $\gt$ (Definition~\ref{labelled tableau def}), since it is \pmt-consistent, then we know there will be at least one open branch \tb{b} --- Definition~\ref{flt-inconsistent}. Now, set $\Delta=\Ub$, we construct the pre $\pmt$ model as from Definition~\ref{pre flt model}. We are required to prove that if $\phi:w\in\Delta$ then $\Mplus,w\Vdash\phi$, and for this we use induction on $com$ --- Definition~\ref{com of formula def}.
+    \par \textit{Base Case:} Let $\phi=p\in\PVAR$, then $\phi:w\in\Delta$ iff $w\in V^\Mplus(p)$ iff $\Mplus,w\Vdash p$ iff $\Mplus,w\Vdash \phi$. 
+    \par \textit{Induction hypothesis:} Assume the claim holds for all formulas with strictly lower complexity ($com$) than that of $\phi$.
+
+    \par \textit{Case 1:} $\phi=\neg\psi$, which we split into three cases.
+
+    \par Case 1a: $\psi=\neg\gamma$. If $\phi:w\in\Delta$ we have $\neg\neg\gamma:w\in\Delta$. Now, by downward saturation and $(\neg E)$, $\gamma:w\in\Delta$. Since $com(\gamma) = com(\neg\neg\phi) <com(\phi)$ we can use the induction hypothesis to get $ \Mplus,w\Vdash\gamma$. Therefore $\Mplus,w\Vdash\neg\neg\gamma$ and hence $\Mplus,w\Vdash\phi$.
+
+    \par Case 1b: $\psi=[\alpha](\gamma_1,\ldots,\gamma_n)$ and $\alpha$ is atomic. If $\phi:w\in\Delta$ we have $\neg[\alpha](\gamma_1,\ldots,\gamma_n):w\in\Delta$. Now, by downward saturation and $(\langle \alpha\rangle E)$, there are $v_1,\ldots,v_n\in \Nam{\Delta}$ such that $R_\alpha wv_1\ldots v_n \in\Delta$ and $\neg\gamma_i:v_i\in\Delta$ for all $1\leq i\leq n$.
+    \par Note that $com(\phi) = cep(\alpha) + \Sigma_{i=1}^m com(\gamma_i) > com(\gamma_i)$ for all $1\leq i\leq m$.
+    So by the induction hypothesis (and Lemma~\ref{relations in gamma iff in model}) $\Mplus,v_i\Vdash \neg\gamma_i$ and there are $v_1,\ldots, v_n\in W_+$ such that $R^{\Mplus}_\alpha wv_1\ldots v_n$. Therefore by its semantics $\Mplus,w\Vdash \neg[\alpha](\gamma_1,\ldots,\gamma_n)$, i.e., $\Mplus,w\Vdash\phi$. 
+
+    \par Case 1c: $\psi=[\alpha](\gamma_1,\ldots,\gamma_n)$ and $\alpha=\pi(\beta_1,\ldots,\beta_{\rho(\pi)})$ is composite (let $\rho(\pi)=m, \rho(\beta_i)=b_i$). If $\phi:w\in\Delta$ then we have $\neg[\alpha](\gamma_1,\ldots,\gamma_n):w\in\Delta$. We can reindex the $\gamma$'s to get $$\neg[\pi(\beta_1,\ldots,\beta_m)](\gamma_1^1,\ldots,\gamma_{b_1}^1,\ldots,\gamma_1^{m},\ldots,\gamma_{b_m}^m):w\in\Delta.$$ 
+    Now, by downward saturation and $(\langle\alpha\rangle E)$ there are $v^i_j\in\Nam{\Delta}$ such that
+    $$R_{\pi(\beta_1,\ldots,\beta_{m})}wv_1^1\ldots v_{b_1}^1\ldots v_1^{m}\ldots v_{b_m}^{m}\in\Delta \text { and } \neg\gamma_j^i:v_j^i\in\Delta$$ for all $1\leq i\leq m$, $1\leq j\leq b_i$. Therefore, again by downward saturation and $(RR)$, there are $u_i\in\Nam{\Delta}$ such that $R_{\pi}wu_1\ldots u_{m}$ \text{,} $R_{\beta_i}u_iv_1^i,\ldots,v_{b_i}^i \in\Delta$ for all $1\leq i\leq m$. 
+    \par Note that $com(\phi) = 1 + cep(\pi(\beta_1,\ldots,\beta_{m})) + \Sigma_{i=1}^m\Sigma_{j=1}^{b_i}com(\gamma_j^i) > com(\neg\gamma_j^i)$ for all $1\leq i\leq m$, $1\leq j\leq b_i$.
+    This means that by the induction hypothesis (and Lemma~\ref{relations in gamma are in model}) there are $v^i_j\in W_+$ and $u_i\in W_+$ such that  $$R^{\Mplus}_{\pi}wu_1\ldots u_{m} \text{ and } R^{\Mplus}_{\beta_i}u_iv_1^i,\ldots,v_{b_i}^i \text{ and } \Mplus,v_j^i\Vdash \neg\gamma_j^i$$ for all $1\leq i\leq m$, $1\leq j\leq b_i$.
+    This implies by the semantics that $\Mplus,u_i \Vdash \neg[\beta_i](\gamma_1^i,\ldots,\gamma_{b_i}^i)$ for all $1\leq i\leq m$. Hence, $$\Mplus,w\Vdash \neg[\pi]([\beta_1](\gamma_1^1,\ldots,\gamma_{b_1}^1),\ldots,[\beta_{m}](\gamma_1^{m},\ldots,\gamma_{b_m}^{m})).$$
+    Therefore, $\Mplus,w\Vdash \neg[\pi(\beta_1,\ldots,\beta_{m})](\gamma_1^1,\ldots,\gamma_{b_1}^1,\ldots,\gamma_1^{m},\ldots,\gamma_{b_m}^{m})$ and so, $\Mplus, w\Vdash \neg[\alpha](\gamma_1,\ldots,\gamma_n)$, i.e., $\Mplus,w\Vdash\phi$.
+    %Ignored for First submission
+%\nnote{Do we need (RR) here? $R_{\pi(\beta_1,\ldots,\beta_{m})}\in\Delta$ to $R_{\pi(\beta_1,\ldots,\beta_{m})}^\Mplus$ by Lemma~\ref{relations in gamma are in model}? (not of priority)}
+
+    \par \textit{Case 2:} $\phi=[\alpha](\psi_1,\ldots,\psi_n)$. Which we split it into two cases. 
+    
+    \par Case 2a: Let $\phi = [\alpha](\psi_1,\ldots,\psi_n)$ and $\alpha$ be atomic. If $\phi:w\in\Delta$ we have $[\alpha](\psi_1,\ldots,\psi_n):w\in\Delta$. Now, by downward saturation and $([\alpha]E)$ for all $v_1,\ldots,v_n\in\Nam{\Delta}$ if $R_\alpha wv_1\ldots v_n\in\Delta$ then $\psi_i:v_i\in\Delta$ for some $1\leq i\leq n$.
+    \par Note that $com(\phi) = cep(\alpha) + \Sigma_{i=1}^n com(\psi_i) > com(\psi_i)$ for all $1\leq i\leq n$. This means that by the induction hypothesis (and Lemma~\ref{relations in gamma iff in model}) for all $v_1,\ldots,v_n\in W_+$ if $R_\alpha^{\Mplus} wv_1\ldots v_n$ then $\Mplus,v_i\Vdash \psi_i$. Therefore, $\Mplus,w\Vdash[\alpha](\psi_1,\ldots,\psi_n)$, i.e., $\Mplus,w\Vdash \phi$.
+
+    \par Case 2b: Let $\phi = [\alpha](\psi_1,\ldots,\psi_n)$ and $\alpha=\pi(\beta_1,\ldots,\beta_{\rho(\pi)})$ is composite (let $\rho(\pi)=m, \rho(\beta_i)=b_i$). If $\phi:w\in\Delta$ we have that $[\alpha](\psi_1,\ldots,\psi_n):w\in\Delta$.
+    We can reindex the $\gamma$'s to get $$[\pi(\beta_1,\ldots,\beta_{m})](\psi_1^1,\ldots,\psi_{b_1}^1,\ldots,\psi_1^{m},\ldots,\psi_{b_m}^{m}):w\in\Delta.$$ Which implies by downward saturation and $([\alpha(\beta)]D)$ that $$[\pi]([\beta_1](\psi_1^1\,\ldots,\psi_{b_1}^1),\ldots,[\beta_m](\psi_1^{m},\ldots,\psi_{b_m}^{m})):w\in\Delta.$$ 
+    Note that by Lemma~\ref{composed is higher com lemma}, $com([\pi(\beta_1,\ldots,\beta_{m})](\psi_1^1,\ldots,\psi_{b_1}^1,\ldots,\psi_1^{m},\ldots,\psi_{b_m}^{m})) > com([\pi]([\beta_1](\psi_1^1,
+    \\ \ldots,\psi_{b_1}^1),\ldots,[\beta_m](\psi_1^{m},\ldots,\psi_{b_m}^{m})))$. 
+    %Ignored for First submission
+%\nnote{WC asked me to flag this.}
+    So by the induction hypothesis 
+    $$\Mplus,w\Vdash[\pi]([\beta_1](\psi_1^1,\ldots,\psi_{b_1}^1),\ldots,[\beta_{m}](\psi_1^{m},\ldots,\psi_{b_m}^{m})).$$ Hence, $\Mplus,w\Vdash[\pi(\beta_1,\ldots,\beta_{m})](\psi_1^1,\ldots,\psi_{b_1}^1, \ldots,\psi_1^{m},\ldots,\psi_{b_m}^{m})$. Therefore, $\Mplus,w\Vdash[\alpha](\psi_1,\ldots,\psi_n)$, i.e., $\Mplus,w\Vdash\phi$.
+    \par From this we can say that if $\gt$ is a \pmt-consistent $\tTh$ then it is satisfiable in a pre-model.
+\end{proof}
+
+\par This theorem may look like a completeness proof, but the issue is that our $\riotn$ relations are not interpreted correctly in our pre-model. As the correct interpretation of $\riotn x_0x_1\ldots x_n$ would make $x_0=x_1=\cdots=x_n$ in our model. To make this happen, we have to quotient $W_+$ with an equivalence relation $\sim$ that depends on any $\iota$-relations that are in the branch.
+
+\begin{definition}\label{flt equivalence rel}
+    Let $\tb{b}$ be a downward saturated branch in a tableau and let $\Delta=\Ub$. Now we define a relation ($\sim$) on $\NamD$ with the following rule:
+    \begin{equation*}
+        u\sim v \text{ if for some } n\in\{1,2\}, R_{\iota_n}w_0\ldots u\ldots v \ldots w_n\in\Delta.
+    \end{equation*}
+\end{definition}
+
+\par We claim this is an equivalence relation on $\NamD$.
+
+\begin{proof}
+    \par We are required to prove the reflexivity, symmetry and transitivity of this relation. Now let $u,v,w$ be arbitrary elements in $\NamD$.
+    \par \textit{Case 1:} From downward saturation $(R_{\iota_1}I)$ would introduce $\riot{1}uu\in\Delta$ and so by definition $u\sim u$.
+    \par \textit{Case 2:} If $u\sim v$ then $R_{\iota_n}x_0\ldots u \ldots v \ldots x_n\in\Delta$ for some $n\in\{1,2\}$. From downward saturation $(R_{\iota_1}I)$ would introduce $\riot{1}uu\in\Delta$. Now with the $(\riotn R_\alpha)$ rule applied to $\riot{1}uu\in\Delta$ we get $\riot{1}vu\in\Delta$ and so $v\sim u$.
+    \par \textit{Case 3:} If $u\sim v$ then $R_{\iota_n}x_0\ldots u \ldots v \ldots x_n\in\Delta$ for some $n\in\{1,2\}$ and from $v\sim w$ we have that $R_{\iota_m}x'_0\ldots v \ldots w  \ldots x'_m\in\Delta$ for some $\in\{1,2\}$. From here, by downward saturation, the $(\riotn R_\alpha)$ rule would be used to get $R_{\iota_n}x'_0\ldots u \ldots w  \ldots x'_m\in\Delta$ and so $u\sim w$.
+\end{proof}
+
+
+\par We can now define what we call the \textit{Canonical $\pmt$ model on an open downward saturated branch}, which gives us the correct interpretation of the $\iota_n$ model terms. We could define it directly from our tableau, but for the sake of convention and ease of use, we define it based on our pre $\pmt$ model.
+ 
+
+\begin{definition}\label{canonical flt model}
+    \par \textbf{(Canonical PMT model)} We define the \textit{Canonical $\pmt$ model} as follows. Let $\tb{b}$ be an open downward saturated branch in a tableau and let $\Delta=\Ub$. We first construct the pre $\pmt$ model $\Mplus = (W_+, R_{\alpha\in\tau}^\Mplus, V^\Mplus(p))$. We construct $\Mtil = (W_\sim,R^\Mtil_{\alpha\in\tau},V^\Mtil(p))$ as follows:
+    \begin{enumerate}
+        \item $W_\sim=W_+/\sim$
+        \item $R^\Mtil_{\alpha\in\tau} = \{([x]_\sim,[y_1]_\sim,\ldots,[y_m]_\sim) \in (W_\sim)^{m+1} \mid \alpha \text{ is atomic}, \rho(\alpha)=m, (x,\iterate{y}{m})\in R^\Mplus_{\alpha\in\tau} \}$
+        \item $V^\Mtil (p) = \{[x]_\sim\in W_\sim\,\mid x\in V^\Mplus(p)\}$
+    \end{enumerate}
+\end{definition}
+
+%Ignored for First submission
+%\nnote{This lemma has been changed and should be checked.}
+
+\begin{lemma}\label{label-element independence}
+    The above definition is well-defined, i.e., equivalence classes are independent of the representatives of the elements of $\NamD$. I.e.,
+    \begin{enumerate}
+        \item if $x\sim y$ then $\stil{x}\in V^\Mtil(p)$ iff $\stil{y}\in V^\Mtil(p)$ for all $p \in$ PVAR,
+        \item and for every $\alpha\in\mtt$ and $\stil{u_0},\ldots,\stil{u_m},\stil{v_0},\ldots,\stil{v_m}\in W_\sim$, $m\geq 0$, if $u_0\sim v_0, \ldots, u_m\sim v_m$ then $R^\Mtil_\alpha \stil{u_0}\ldots \stil{u_m}$ iff $R^\Mtil_\alpha
+        \stil{v_0}\ldots \stil{v_m}$.
+    \end{enumerate}
+\end{lemma}
+
+%Ignored for First submission
+%\nnote{proof must be checked too:}
+
+\begin{proof}
+    
+    \par For property one of the above lemma, assume $x\sim y$. Now, $\stil{x}\in V^{\Mtil}(p)$ would only be the case if there is some $z\in W_+$ such that $z\sim x$ and $z\in V^\Mplus$. Therefore, $p:z\in\Delta$. 
+    Using transitivity of $\sim$ we have that $z\sim y$, hence $\riot{n}w_0\ldots z \ldots y \ldots w_n\in\Delta$ (for some $n\in\{1,2\}$). By downward saturation, the $(\riot{n}x)$ rule would have been applied to $p:z\in\Delta$ to produce $p:y\in\Delta$ and so $y\in V^\Mtil(p)$. Symmetrically, we can argue for the converse by using the symmetry of $\sim$.
+    \par For the second property, we have to use induction on $\mtt$. \textit{Base Case:} Let $\alpha$ be atomic with $\rho(\alpha)=m>0$ and $u_i\sim v_i$ for all $0\leq i \leq m$.  Now, assume $R^\Mtil_\alpha \stil{u_0}\stil{u_1}\ldots \stil{u_m}$. This means that there are $w_0,\ldots,w_m$ such that $R^\Mplus_\alpha w_0\ldots w_m$ and $w_0\sim u_0, \ldots, w_m\sim u_m$. By transitivity, we have that $w_0\sim v_0, \ldots, w_m\sim v_m$. So, by Definition~\ref{pre flt model}, $R_\alpha w_0w_1\ldots w_m\in \Delta$. Note that for each $0\leq i \leq m$, we have that $$\riot{n_i}x_0^i \ldots w_i \ldots v_i \ldots x_{n_i}^i\in \Delta$$  for $n_i\in\{1,2\}$. Through downward saturation we can apply the $(\riotn R_\alpha)$ rule $m+1$ times on $R_\alpha w_0\ldots w_i \ldots w_m\in \Delta$ to get $$R_\alpha v_0\ldots v_i \ldots v_m\in\Delta.$$ Since $\alpha$ is atomic, we get that $R^\Mplus_\alpha v_0\ldots v_i \ldots v_m$. Therefore $R^\Mtil_\alpha \stil{v_0}\ldots \stil{v_i} \ldots \stil{v_m}$. Using symmetry of $\sim$, we can argue for the converse.
+    \par \textit{Inductive Case:} Assume for all $\alpha$ such that $cep(\alpha)<k$ that if $u_0\sim v_0, \ldots, u_m\sim v_m$ and $R^\Mtil_\alpha \stil{u_0}\ldots \stil{u_m}$ then $R^\Mtil_\alpha \stil{v_0}\ldots \stil{v_m}$ for all $\alpha$ such that $cep(\alpha)<k$.
+    \par Let $\alpha$ be composite (with $cep(\alpha)=k$) and $\rho(\alpha)=m>0$ and $u_j\sim v_j$ for all $0\leq j \leq m$. And assume that $R^\Mtil_\alpha u_0u_1\ldots u_m$. Since $\alpha$ is composite we have $\alpha = \pi(\beta_1,\ldots,\beta_{\rho(\pi)})$ for some $\pi,\beta_1,\ldots,\beta_{\rho(\pi)}\in\mtt$, letting $\rho(\beta_i)=b_i$. Now, after reindexing (both the $u$'s and $v$'s) we have $$R^\Mtil_{\pi(\beta_1,\ldots,\beta_{\rho(\pi)})} \stil{u_0}\stil{u^1_1}\ldots \stil{u^1_{b_1}}\ldots \stil{u^{\rho(\pi)}_{1}} \ldots \stil{u^{\rho(\pi)}_{b_{\rho(\pi)}}}$$ and so for some $\stil{w_1},\ldots,\stil{w_{\rho(\pi)}}\in W_\sim$ we have that $$R^\Mtil_\pi \stil{u_0}\stil{w_1}\ldots \stil{w_{\rho(\pi)}} \text{ and } R^\Mtil_{\beta_i} \stil{w_i} \stil{u^i_1}\ldots \stil{u^i_{b_i}}$$ for all $1\leq i\leq \rho(\pi)$. Now we have $u_j\sim v_j$ for $0\leq j \leq m$, so to use the induction hypothesis, we need to show that $w_i\sim w_i$ for all $1\leq i\leq \rho(\pi)$, but this is already true since $\sim$ is reflexive. Therefore, by the induction hypothesis, $R^\Mtil_\pi \stil{v_0}\stil{w_1}\ldots \stil{w_{\rho(\pi)}}$ and $R^\Mtil_{\beta_i} \stil{w_i}\stil{v^i_1}\ldots \stil{v^i_{b_i}}$ for all $1\leq i\leq \rho(\pi)$ and so $R^\Mtil_\alpha \stil{v_0}\stil{v_1}\ldots \stil{v_m}$. Using symmetry of $\sim$, we can argue for the converse.
+\end{proof}
+
+%Ignored for First submission
+%\nnote{New lemma:}
+
+\begin{lemma}\label{relations on original and quotient correspond lemma}
+     Let $\tb{b}$ be a downward saturated branch and $\Delta=\Ub$. Let $\Mplus$ be the pre-model of $\Delta$ and $\Mtil$ its quotient model. Then for atomic $\alpha\in\mtt$, $R^{\Mplus}_\alpha w_0 w_1\ldots w_m$ iff $R^{\Mtil}_\alpha \stil{w_0}\stil{w_1}\ldots\stil{w_m}$. 
+\end{lemma}
+
+\begin{proof}
+    The left to right direction is by construction. For the right to left direction, assume that $R^{\Mtil}_\alpha \stil{w_0}\stil{w_1}\ldots\stil{w_m}$.
+    This means that there are states $v_0,\ldots,v_m\in W_+$ such that $R^{\Mplus}_\alpha v_0\ldots v_m$ and $v_i\in \stil{w_i}$ for all $1\leq i\leq m$. This means that $v_i \sim w_i$ for all $1\leq i\leq m$, And so by Definition~\ref{pre flt model}, $R_\alpha v_0v_1\ldots v_m\in \Delta$. Note that for each $0\leq i \leq m$, we have that $$\riot{n_i}x_0^i \ldots v_i \ldots w_i \ldots x_{n_i}^i\in \Delta$$  for $n_i\in\{1,2\}$. Through downward saturation we can apply the $(\riotn R_\alpha)$ rule $m+1$ times on $R_\alpha v_0\ldots v_i \ldots v_m\in \Delta$ to get $$R_\alpha w_0\ldots w_i \ldots w_m\in\Delta.$$ Since $\alpha$ is atomic, we get that $R^\Mtil_\alpha w_0\ldots w_i \ldots w_m$.
+\end{proof}
+
+\par We have to show that any formula that is satisfied in the pre $\pmt$ model is also satisfied in the canonical $\pmt$ model. We do this by constructing a p-morphism from the pre $\pmt$ model to the canonical $\pmt$ model.
+
+\begin{theorem}\label{canonical model is p-morphic to pre model}
+    Let $\tb{b}$ be an open downward saturated branch in a tableau and let $\Delta=\Ub$. Then let $\Mplus$ and $\Mtil$ be the pre and canonical $\pmt$ models, respectively. Now we prove that $f:\Mplus\to\Mtil$ such that $f(w)=[w]_\sim$ is a p-morphism from $\Mplus$ to $\Mtil$.
+\end{theorem}
+\begin{proof}
+    
+
+    \par First, we prove that $f$ is a homomorphism, i.e., for all atomic $\alpha\in\mtt$, $\rho(\alpha) = n$, if $(w_0,\ldots, w_n)\in \RMplus_\alpha$ then $([w_0]_\sim,\ldots,\stil{w_n})\in \RMtil_\alpha$. Notice that this is true by construction and by Lemma~\ref{if homomorphic and back condition on atomic then also on composed}, it holds for all $\alpha\in\mtt$.
+    \par Next we prove that $w$ and $f(w)$ satisfy the same propositional variables. Again, this is true by construction. 
+    \par Lastly, we need to prove that $f$ respects the back condition for every atomic $\alpha\in\mtt$. Let $w_0\in W_+$ and $\stil{w_1},\ldots, \stil{w_n}\in W_\sim$ and $\rho(\alpha)=n$. Let $(f(w_0),\stil{w_1},\ldots,\stil{w_n}) = (\stil{w_0},\stil{w_1},\ldots,\stil{w_n})\in \RMtil_\alpha$.
+    Therefore, by Lemma~\ref{relations on original and quotient correspond lemma} we have that $(w,w_1,\ldots,w_n)\in \RMplus_\alpha$. Trivially, $f(w_i) = \stil{w_i}$ for all $1\leq i\leq n$, and so the back condition is satisfied. By Lemma~\ref{if homomorphic and back condition on atomic then also on composed}, the back condition holds for all $\alpha\in\mtt$.
+    %\\ From Definition~\ref{canonical flt model} this is only the case if in the pre model we have $(w,w_1,\ldots,w_n)\in \RMplus_\alpha$ and $\stil{w_i} = v_i$ for all $1\leq i\leq n$, i.e., $f(w_i) = v_i$ for all  $1\leq i\leq n$. This proves the back condition.
+
+\par This shows that $f$ is a p-morphism and $\Mtil$ is a p-morphic image of $\Mplus$.
+\end{proof}
+
+%Ignored for First submission
+%\nnote{New theorem:}
+
+\begin{theorem}
+    The system $\pmt$ is complete w.r.t.\ the class of all $\tau$-frames.
+\end{theorem}
+
+\begin{proof}
+    As mentioned in the beginning of this section, we will be proving an equivalent form of completeness. I.e., every $\pmt$-consistent $\tTh$ is satisfiable in a $\tau$-model.
+    \par We already laid the groundwork for this. Let $\gt$ be a $\pmt$-consistent $\tau$-theory. Then, after creating a tableau for $\gt$ (Definition~\ref{labelled tableau def}) since it is \pmt-consistent, then we know there will be at least one open branch \tb{b} --- Definition~\ref{flt-inconsistent}. Now, set $\Delta=\Ub$, we construct the pre $\pmt$ model $\Mplus$ as from Definition~\ref{pre flt model}. We have proven in Theorem~\ref{completeness of flt theorem} that there is a state $w$ in $\Mplus$ such that $\Mplus,w\Vdash\Gamma$. With Theorem~\ref{canonical model is p-morphic to pre model}, we can transfer this satisfaction to the canonical $\pmt$-model. I.e., if $f$ is the p-morphism from $\Mtil$ to $\Mplus$ then $\Mtil,f(w)\Vdash\Gamma$. Since $\Mtil$ is a $\tau$-model, with the proper interpretations of any $\iota$-relations, we have proven our original statement.
+\end{proof}
+
+
+
+

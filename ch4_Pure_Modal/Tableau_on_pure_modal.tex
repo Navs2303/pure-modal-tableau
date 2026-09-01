@@ -1,0 +1,263 @@
+\section{A tableau system for  \texorpdfstring{$\Lp$}{Lp}}\label{pure tableau section}
+
+\par Sound and complete tableau systems give a useful way of testing modal formulae for their satisfiability or validity. They are used differently in different contexts, but in our context, they find models and states for which the given formulae (which are input into the tableau) will be true. Using this, we can also find if a modal formula is valid or not. The way we do this is: if you want to prove that $\phi$ is valid, input $\neg\phi$ into the tableau and if it cannot give you a model (i.e., the tableau closes) for $\neg\phi$, it means that there doesn’t exist a model that satisfies $\neg\phi$, i.e., $\phi$ will be satisfied for any model and state, which means that it is valid. But how does a tableau do this? By systematically using inference rules, a formula is reduced to smaller parts until no inference rule can be applied. To make sure that the tableau works as needed, we need to prove that these rules are sound and complete, which we do in Sections~\ref{soundness section} and~\ref{completeness section}. We will be using what is called a labelled tableau, where we assign states to the formulae in the tableau – an example will clarify what we mean by this. (See~\cite{governatori2008labelled} for more on labelled tableau.) To continue from here, we need to define what a labelled tableau is. But there are a number of definitions that are needed before we can properly define this.
+
+
+%Ignored for First submission
+%\nnote{Next two definitions correct?}
+
+\begin{definition} \label{labelled formulae def}
+    \textbf{(Labelled formulae)} First, we introduce a set `Names' which is a possibly countably infinite set of special variables disjoint from PVAR that will be used as names for states in models. A \textit{labelled $\Lp$ formula} is an ordered pair $(\phi,x)$, denoted $\phi:x$ (read as $\phi$ at $x$) where $\phi\in\Lp$ and $x \in$ Names. 
+\end{definition}
+
+\begin{definition} \label{relational atoms def}
+   \textbf{(Relational atoms on $\tau$)} We define the set $\RNAMES_\tau = \{R_\alpha\mid\alpha\in\mtt\}$. A \textit{relational atom on $\tau$} is a $(\rho(\alpha)+2)$-tuple, $(R_\alpha,x_0,x_1,\ldots,x_{\rho(\alpha)})$, denoted $R_\alpha (x_0\ldots x_{\rho(\alpha)})$ or  $R_\alpha x_0\ldots x_{\rho(\alpha)}$, where $x_0,\ldots, x_{\rho(\alpha)} \in$ Names (Definition~\ref{labelled formulae def}) and $R_\alpha \in\RNAMES_\tau$. We will often leave out the subscript when the context of what $\mtt$ is clear.
+\end{definition}
+
+\begin{definition}\label{tableau terms definition}
+    \textbf{(Language of tableau terms, $\Ltt$)} We let $\Ltt$ be the set of all labelled $\Lp$ formulae and all relational atoms on $\tau$. 
+\end{definition}
+
+\begin{definition}
+    \textbf{(Definition of Names($\Delta$))} Let $\Delta\subseteq\Ltt$. We define the set Names($\Delta$) as follows:
+    \begin{enumerate} [label=(\roman*)]
+        \item If $\phi :x\in \Delta$ then $x\in$ Names($\Delta$),
+        \item if $R_\alpha x_0x_1\ldots x_{n}\in\Delta$ then  $x_0,x_1,\ldots,x_{n}\in$ Names($\Delta$),
+        \item and nothing else.
+    \end{enumerate}
+\end{definition}
+   
+\begin{definition}\label{RNames function definition}
+    \textbf{(Definition of RNames($\Delta$))} Let $\Delta\subseteq\Ltt$. We define the set RNames($\Delta$) as follows:
+    \begin{enumerate}[label=(\roman*)]
+        \item if $R_\alpha x_0x_1\ldots x_{n}\in\Delta$ then $R_\alpha\in\RnamD$,
+        \item if $R_{\gamma}\in\RnamD$ and $\gamma = \alpha(\beta_1,\ldots,\beta_n)$ then $R_\alpha,R_{\beta_1},\ldots,R_{\beta_n}\in\RnamD$,
+        \item and nothing else.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}
+    \textbf{($\tau$-theory)} Let $\tau$ be a similarity type. We say a set of formulas from $\Lp$ is called a \textit{$\tau$-theory}. I.e. $\gt$ is a $\tau$-theory if $\gt\subseteq\Lp$.
+\end{definition}
+
+The next two definitions are adapted from~\cite{gore1999tableau}.
+
+\begin{definition}\label{tableau rules def}
+\renewcommand*\linenumberstyle[1]{}
+    \textbf{(Tableau rule)} A \textit{tableau rule} $(\beta)$ consists of a premise $\mathcal{P}$ at the top and a finite number of conclusions $\mathcal{C}_1,\mathcal{C}_2,\ldots,\mathcal{C}_b$ below:
+    \begin{center}
+    \begin{tableau}{
+    just sep=2mm,
+    }  
+    [\mathcal{P}
+    [\mathcal{C}_{1}]
+    [\mathcal{C}_{2}]
+    [\textcolor{white}{|}\cdots]
+    [\mathcal{C}_{b} ,just={($\beta$)}]]      
+    \end{tableau}
+    \end{center}
+    \par The premise is a subset of $\Ltt$, and so is each conclusion.
+\end{definition}
+
+\begin{definition}\label{labelled tableau def}
+\renewcommand*\linenumberstyle[1]{}
+    \textbf{(Labelled tableau)} We define a \textit{labelled tableau} for a set of labelled formulas $\Delta$ as a tree with the following conditions:
+    \begin{enumerate}
+        \item We set $\Delta$ as the root of the labelled tableau.
+        \item For any non-leaf $(\Delta')$ of the tree, its children are instantiations (i.e., when the schema is substituted for a concrete formula) of the conclusion of a tableau rule $(*)$ where $\Delta'$ is an instantiation of the premise of $(*)$
+    \end{enumerate}
+
+
+\par Note: the nodes in these trees are sets. Also note that a \textit{labelled tableau for a $\tTh$ $\Gamma$} is defined by setting the $\Delta = \{\phi:x\mid \phi\in\Gamma, x\in\NAMES\}$. 
+
+\end{definition}
+
+\begin{remark}
+\par This definition allows us to identify labelled tableau, but we construct tableaux dynamically by applying tableau rules to leaf nodes. A tableau rule with premise $\mathcal{P}$ can be applied to a node $\Delta'$ if $\Delta'$ is an instance of $\mathcal{P}$. We have the notion of an \textit{end node}, which is a leaf node where we will not apply an inference rule. Also, if $\tb{b}$ is a branch of a tableau, then we denote $\Ub$ as the union of the sets along path $\tb{b}$. Now, the steps to expand a tableau are as follows:
+    \begin{enumerate}[label=(\roman*)]
+        \item Choose a leaf node $\Delta'$ and choose a rule $(\beta)$ which is applicable to $\Delta'$.
+        \item If $(\beta)$ has $m$ conclusions then create $m$ successor nodes for $\Delta'$, with each successor $\Delta_i$ carrying an appropriate instantiation of conclusion $\mathcal{C}_i$.
+        \item We do this with the provision that if every rule application on a node $\Delta'$ (on a branch $\tb{b}$), will result at least one of its possible children $\Delta''$, be such that $\Delta''\subseteq \Ub$, then $\Delta'$ is an end node, and so we don't expand the tableau. We also say that this branch (or node) is downward saturated (Definition~\ref{downward saturated def})
+        \item \label{Labelled tableau step (iv)}If a node $\Delta'$ is such that $\phi:x\in\Delta'$ and $\neg\phi:x\in\Delta'$, then that node is an end node, and we say that the \textit{branch closes}. A branch also closes if $\neg[\iota_0]:x\in\Delta'$.
+    \end{enumerate}
+\end{remark}
+
+\par Now, note that in the definition of our tableau rules, any unaffected elements of $\Ltt$ will be copied down through the branch. This is known as Kracht's style. (For more on this, see~\cite{kracht1999tools}). But when displaying tableau, we will omit this copying of $\Delta$ as it is cumbersome. This is what we call Fitting's style~\cite{fitting1972tableau}. Thus, when displaying these tableaux, we will only write the formula that the inference rule replaces/introduces.
+
+\par Now if a branch meets condition~\ref{Labelled tableau step (iv)}, we ``close" the branch and we call it a \textit{closed branch}. Any branch that doesn't close is called an \textit{open branch}. A tableau closes if all its branches close. It is appropriate here to define what we mean by a branch and tableau being downward saturated.
+
+
+%Ignored for First submission
+%\nnote{Next definition changed. Do check.}
+\begin{definition}\label{downward saturated def}
+    \textbf{(Downward saturated)} Let \textbf{b} be a branch of a tableau and $\Delta$ any node in the branch. We call \textbf{b} \textit{downward saturated} if for every rule $(*)$ (applicable to $\Delta$) at least one of its children $\Delta'$ is such that $\Delta'\subseteq\Ub$.
+    %We also say that a set $\Delta'$ is downward saturated if for every applicable rule $(*)$ each of its children $\Delta''$ are such that $\Delta''\subseteq\Delta'$. 
+    We also say that a tableau is downward saturated if every branch is either closed or is downward saturated.
+\end{definition}
+
+\par Now, we need to find a corresponding $\mtt$-model using $\NamD$ and $\RnamD$. To do this, we define the mappings $\mathsf{S}$ and $\mathsf{R}$. $\mathsf{S}$ associates each element in `Names' to a state in $W$ (in this model we are constructing). Let $\mathsf{S}: \NamD\rightarrow W$ be a mapping between these two sets. Where $\mathsf{S}$ takes a name (say $x$) and maps to some element in $W$. I.e, $\mathsf{S}(x)\in W$. (In most cases, we will use the names in the tableau to be what we call the states in $W$ and only use this mapping formally when proving properties of our system.) $\mathsf{R}$ is defined as follows: $\mathsf{R}: \RnamD\rightarrow\{ R^{\M}_{\alpha} \}_{\alpha \in \mtt}$, where $R_\alpha \stackrel{\textsf{R}}{\longmapsto} R_\alpha^\M$. Here $R_\alpha^\M$ is the interpretation of $R_\alpha$ in the specific model $\M$.
+
+\par We now list out the rules for the tableau system we will be using. Note that $\Delta$ here denotes a subset of $\Ltt$ and $\rho(\alpha)=m$.
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{}
+
+Negation Elimination: \\
+\begin{tableau}
+    {}
+    [\Delta \coms  \neg\neg\phi :x
+    [\Delta \coms  \phi: x ,just={$(\neg E)$}]]
+\end{tableau}\\
+
+\textcolor{white}{a}
+
+Diamond Elimination:\\
+%\resizebox{116mm}{!}{
+    \begin{tableau}
+    {vertical/.style={ %define style for phantom node
+    %with vertical edge drawn from it
+    before drawing tree={not ignore edge, edge=draw},
+    },}
+    [\Delta \coms \neg\lsb \alpha\rsb (\phi_1\text{
+    ,\,} \phi_2\coms  \ldots\coms  \phi_{m}):x
+    [\Delta \coms  R_\alpha xy_1\ldots y_m \coms  \neg\phi_1 :y_1 \coms  \ldots \coms  \neg\phi_m :y_m ,just={$(\langle\alpha\rangle E)$}
+    ]]
+    \end{tableau}
+    %}
+    \par Where $y_1,\ldots,y_m\in\NAMES$ that are distinct from $\NamD \cup \{x\}$.
+\\
+
+\textcolor{white}{a}\\
+Box Elimination:\\
+%\resizebox{116mm}{!}{
+    \begin{tableau}
+    {vertical/.style={ %define style for phantom node
+    %with vertical edge drawn from it
+    before drawing tree={not ignore edge, edge=draw},
+    },}
+    [\Delta  \coms  \lsb \alpha\rsb (\phi_1\coms  \phi_2\coms  \ldots\coms  \phi_{m}):x \coms  R_\alpha xy_1\ldots y_m
+    [ \Delta' \coms \phi_1 :y_1
+    ]
+    [\cdots
+    ]
+    [ \Delta' \coms \phi_m :y_m ,just={$([\alpha]E)$}
+    ]]
+    \end{tableau}
+    %}
+    \par Where $\Delta'$ stands for $\Delta 
+     \coms  \lsb \alpha\rsb (\phi_1\coms  \phi_2\coms  \ldots\coms  \phi_{m}):x \coms  R_\alpha xy_1\ldots y_m$.
+\\
+
+\textcolor{white}{a}
+    
+    $\iota_n$-relation on a state:\\
+    For some $0 \leq i,j \leq n\in\{1,2\}, i\not=j
+    $\\
+\begin{tableau}
+    {}
+    [\Delta \coms  R_{\iota_n}(x_0\ldots x_n) \coms  \phi :x_i
+    [\Delta \coms   R_{\iota_n}(x_0\ldots x_n) \coms  \phi :x_i \coms  \phi :x_j ,just={$(R_{\iota_n}x)$}
+    ]]
+\end{tableau}\\
+
+\textcolor{white}{a}
+
+    $\iota_n$-relation on any other relation:\\
+    For some $0 \leq i,j \leq n\in\{1,2\}, i\not=j $\\
+\begin{tableau}
+    {}
+    [\Delta \coms  R_{\iota_n}(x_0\ldots x_n) \coms  R_\alpha(b_0b_1\ldots x_i \ldots b_{m})
+    [\Delta \coms R_{\iota_n}(x_0\ldots x_n) \coms  R_\alpha(b_0b_1\ldots x_i \ldots b_{m})  \coms  R_\alpha(b_0b_1\ldots x_j \ldots b_{m}) ,just={$(R_{\iota_n}R_\alpha)$}
+    ]]
+\end{tableau}\\
+
+\textcolor{white}{a}
+
+    $\iota_1$-relation introduction:\\
+    For some $x\in\NamD$\\
+\begin{tableau}
+    {}
+    [\Delta 
+    [\Delta \coms R_{\iota_1}(xx), just={$(R_{\iota_1}I)$}
+    ]]
+\end{tableau}\\
+
+\textcolor{white}{a}
+
+    $\iota_2$-relation introduction:\\
+    For some $x\in\NamD$\\
+\begin{tableau}
+    {}
+    [\Delta 
+    [\Delta \coms R_{\iota_2}(xxx), just={$(R_{\iota_2}I)$}
+    ]]
+\end{tableau}\\
+
+
+\textcolor{white}{a}
+
+  Relation Reduction:\\
+\begin{tableau}
+    {vertical/.style={ %define style for phantom node
+    %with vertical edge drawn from it
+    before drawing tree={not ignore edge, edge=draw},
+    },}
+    [\Delta \coms  R_{\alpha(\beta_1, \beta_2, \ldots, \beta_m)}(xx_1^1x_2^1\ldots x_{\rho(\beta_1)}^1 x_1^2 \ldots x_{\rho(\beta_2)}^2 \ldots x_1^m \ldots x_{\rho(\beta_m)}^m)
+    [
+    [\Delta \coms  R_{\alpha}(xy_1 \ldots y_m) \coms  R_{\beta_1}(y_1x_1^1 \ldots x_{\rho(\beta_1)}^1) \coms  \ldots \coms  R_{\beta_m}(y_m x_1^m \ldots x_{\rho(\beta_m)}^m) ,just={$(RR)$}
+    ]]]
+\end{tableau}\\
+Where $y_1,\ldots,y_m\in\NAMES$ that are distinct from $\NamD \cup \{x,x_1^1,x_2^1,\ldots, x_{\rho(\beta_1)}^1, x_1^2, \ldots, x_{\rho(\beta_2)}^2, \ldots, x_1^m, \ldots, x_{\rho(\beta_m)}^m\}$
+\\i.e., distinct from any names occurring in the premise.
+
+\textcolor{white}{a}\\
+%\textcolor{white}{a}\\
+%\textcolor{white}{a}
+
+Boxed Modality Distribution:\\
+\begin{tableau}
+    {vertical/.style={ %define style for phantom node
+    %with vertical edge drawn from it
+    before drawing tree={not ignore edge, edge=draw},
+    },}
+    [\Delta \coms  \lsb \alpha(\beta_1\coms \ldots\coms \beta_{\rho(\alpha)})\rsb (\phi_1^1\coms \phi_2^1\coms \ldots \coms \phi_{\rho(\beta_1)}^1\coms  \phi_1^2\coms  \ldots \coms \phi_{\rho(\beta_2)}^2\coms  \ldots\coms  \phi_1^m \coms \ldots \coms \phi_{\rho(\beta_m)}^m):x
+    [
+    [\Delta \coms  \lsb \alpha\rsb (\lsb \beta_1\rsb (\phi_1^1\coms \phi_2^1\coms \ldots \coms \phi_{\rho(\beta_1)}^1)\coms  \ldots \coms  \lsb \beta_{m}\rsb (\phi_1^m \coms \ldots \coms \phi_{\rho(\beta_m)}^m)):x ,just={$([\alpha(\beta)]D)$}
+    ]]]
+\end{tableau} 
+\end{center}\
+
+\par We will call this tableau system $\pmt$ (Pure-Modal-Tableau). We will prove the soundness and completeness of this system, but first,  we need to define some notation before we can define the soundness and completeness of $\pmt$.
+
+\begin{definition}
+    \textbf{($\Delta$ satisfied in $\M$)} We say that \textit{$\Delta\subseteq\Ltt$ is satisfied in} $\M= (W,\{ R_{\alpha} \}_{\alpha \in \mtt},
+    \\ V)$, if there is a mapping $\mathsf{S}:$ Names$(\Delta)\rightarrow W$  and a mapping $\mathsf{R}:$ RNames($\Delta)\rightarrow\{ R_{\alpha} \}_{\alpha \in \mtt}$ such that:
+    \begin{enumerate} [label=(\roman*)]
+        \item if $\phi : x \in \Delta$ then $\M,\mathsf{S}(x)\Vdash\phi$,
+        \item if R$_\alpha x_0x_1\ldots x_n \in \Delta$ then $(\textsf{S}(x_0),\textsf{S}(x_1),\ldots,\textsf{S}(x_n)) \in \mathsf{R}(R_\alpha) = R_\alpha^{\M}$.
+    \end{enumerate}
+\end{definition}
+
+%Ignored for First submission
+%\nnote{Is this paragraph correct:}
+\par As a consequence of (ii) above, we also have that $\mathsf{R}(R_{\alpha(\beta_1,\ldots,\beta_n)}) = (\mathsf{R}(R_\alpha))\circ(\mathsf{R}(R_{\beta_1}),\ldots,\mathsf{R}(R_{\beta_n}))$. This is because $(\mathsf{R}(R_\alpha))\circ(\mathsf{R}(R_{\beta_1}),\ldots,\mathsf{R}(R_{\beta_n})) = R_\alpha^{\M} \circ (R_{\beta_1}^{\M},\ldots,R_{\beta_n}^{\M}) = R_{\alpha(\beta_1,\ldots,\beta_n)}^{\M}$.
+
+\begin{definition}\label{sat of Gamma pure}
+    \textbf{($\Delta$ is satisfiable)} A set $\Delta\subseteq\Ltt$ is satisfiable if, there is a $\mtt$-model $\M = (W,\{ R_{\alpha} \}_{\alpha \in \mtt},V)$, such that $\Delta$ is satisfied in $\M$.
+\end{definition}
+
+\begin{definition}\label{Derivability - Flat}
+    \textbf{(Derivability in $\pmt$)} A formula $\phi$ is derivable from a finite set of formulas $\{\phi_1,\ldots,\phi_n\}$ if any tableau for $\{ \phi_1:x , \ldots ,\phi_n:x, \neg \phi:x\}$ closes. This is denoted as:
+    \begin{equation*}
+        \phi_1 ,\ldots,\phi_n \vdash_\pmt \phi
+    \end{equation*}
+    \par Now we extend this notion to a (possibly) infinite set $\Gamma$ stipulating that:
+    \begin{equation*}
+        \Gamma \vdash_\pmt \phi \;\;\text{if}\;\; \text{for some finite subset } \{\phi_1,\ldots,\phi_n\} \subseteq \Gamma \text{ we have } \phi_1,\ldots,\phi_n \vdash_\pmt \phi.
+    \end{equation*}
+\end{definition}
+
+\par We will prove the soundness and completeness of $\pmt$ in later sections, but for now, we apply these rules with a couple of examples.
+%Ignored for First submission
+%\nnote{phrasing of previous sentence?}
+As mentioned earlier, we will not copy down formulas when displaying our tableau. Also note that for a relational atom $R_\alpha(x_1x_2\ldots x_{\rho(\alpha)})$, we often remove the brackets and write it as: $R_\alpha x_1x_2\ldots x_{\rho(\alpha)}$.   

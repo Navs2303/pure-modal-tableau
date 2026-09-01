@@ -1,0 +1,142 @@
+\documentclass{report}
+%documentclass[12pt]{report} for submission???
+\usepackage{graphicx} % Required for inserting images
+\usepackage[cc]{titlepic}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{yhmath}
+\usepackage{mathtools}
+\usepackage{esvect}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{setspace}
+\usepackage{array}
+\usepackage{enumerate}
+%\usepackage{enumitem}
+\usepackage{todonotes}
+%\usepackage{makeidx}
+%\usepackage{amsmidx}
+\usepackage[splitindex]{imakeidx}
+\usepackage{xassoccnt} %suspend counter
+%\usepackage{mathaccent}
+\usepackage{multirow}
+\usepackage[shortlabels]{enumitem}
+\usepackage{hyperref}
+\usepackage{lipsum}
+
+
+%\usepackage[english]{babel} % To obtain English text with the blindtext package
+%\usepackage{blindtext}
+
+%tableau pakcages
+\usepackage[tableaux]{prooftrees}
+
+\graphicspath{images}
+\usepackage{subfiles} % Best loaded last in the preamble
+
+\makeindex[name=symb,title=List of Symbols]
+\makeindex[name=defs,title=List of Definitions]
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+
+\newtheorem{example}[theorem]{Example}
+\newtheorem{definition}[theorem]{Definition}
+
+\newtheorem{remark}{Remark}
+\newtheorem*{remark*}{Remark}
+
+%For all your home brewed commands
+\input{new_commands.tex}
+
+\newcommand{\nnote}[1]{{\ \color{purple}\bf{}{\small NP: #1}}}
+\newcommand{\nmnote}[1]{\marginpar{\color{purple} \tiny \raggedright  \bf{NP:}#1}}
+\newcommand{\nfnote}[1]{\footnote{\color{purple} NP: #1}}
+
+\newcommand{\tnote}[1]{{\ \color{red}\bf{}{\small ToDo: #1}}}
+\newcommand{\tmnote}[1]{\marginpar{\color{red} \tiny \raggedright  \bf{ToDo:}#1}}
+\newcommand{\tfnote}[1]{\footnote{\color{red} ToDo: #1}}
+
+\newcommand{\wnote}[1]{{\ \color{blue}\bf{}{\small WC: #1}}}
+\newcommand{\wmnote}[1]{\marginpar{\color{blue} \tiny \raggedright \bf{WC:} #1}}
+\newcommand{\wfnote}[1]{\footnote{\color{blue} WC: #1}}
+
+%proposed topic Topics in Modal and Temporal Inference
+\title{Topics in Modal and Temporal Inference\\
+\large{University of Witwatersrand}\\School of Mathematics\\}
+\author{\Large{Author: Navin Philip} \\ \\
+ \Large{Supervised by: Prof. Willem Conradie} \\ 
+ \Large{Co-supervised by: Prof. Valentin Garonko}\\ \Large{ - Stockholm University}}
+
+\titlepic{\includegraphics[scale=0.5]{images/wits_logo.png}\\}
+\date{\parbox{\linewidth}{\centering%
+  \today\endgraf\bigskip
+  A dissertation submitted for the degree of\endgraf Master of Science in Pure Mathematics}}
+
+\usepackage[a4paper,left=3cm,top=3cm,right=3cm,bottom=3cm]{geometry}
+%\usepackage[left=3cm,top=3cm,right=3cm,bottom=2cm]{geometry} - original from Conradie
+%\usepackage[a4paper,left=3cm,top=3cm,right=3cm,bottom=3cm,marginparwidth=1.75pt or cm?]{geometry}  - from Abuzer
+
+\begin{document}
+\maketitle
+
+
+
+\input{thesis_preamble.tex}
+
+
+\tableofcontents
+\newpage
+
+\chapter{Introduction}\
+\subfile{ch1_intro/intro}
+
+\newpage
+
+\chapter{Preliminaries}
+\subfile{ch2_prelims/prelim_intro.tex}
+\subfile{ch2_prelims/completeness}
+\subfile{ch2_prelims/temporal_logic}
+\subfile{ch2_prelims/invariance}
+
+\newpage
+
+\chapter{Sound and Complete Tableau for Purely Modal languages}\label{sound and complete tableau chapter}
+\input{ch4_Pure_Modal/pure_intro.tex}
+\input{ch4_Pure_Modal/Purely_modal_languages}
+\input{ch4_Pure_Modal/Tableau_on_pure_modal}
+\input{ch4_Pure_Modal/examples_pure_modal}
+\input{ch4_Pure_Modal/soundness_of_flat}
+\input{ch4_Pure_Modal/completeness_of_FLT}
+
+\newpage
+
+\chapter{Conclusion and Further Research}
+\input{ch5_conclusion/conclusion.tex}
+
+\newpage
+
+%\input{work/work in progress}
+
+\index[symb]{to be deleted}
+\index[defs]{to be deleted}
+
+%\newpage
+%\printindex[symb]
+%\newpage
+%\printindex[defs]
+
+\newpage
+\bibliography{references}
+\bibliographystyle{plain}
+
+\end{document}

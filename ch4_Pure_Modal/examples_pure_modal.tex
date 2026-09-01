@@ -1,0 +1,264 @@
+\section{Examples using \pmt}\label{pure tableau examples section}
+
+\par In this section we present several examples of derivations in $\pmt$. We will assume the soundness (Theorem~\ref{Soundness of PMT - theorem}) and completeness (Theorem~\ref{completeness of flt theorem}) of our system $\pmt$ for now, but this will be proven in subsequent sections. If the formula is not originally in $\Lp$, we rewrite it so that it is $\Lp$ --- Proposition~\ref{pure modal expresses basic proposition}. Generally, when we input a formula into a tableau, we first compose any composable modalities so that it is in $\LpMax$ as per Definition~\ref{maximally composed formulas definition - pure}. This is not required, and we will do an example where we don't compose all modalities.
+
+\par The first example we will do is an equivalent form of the K-axiom in $\Lp$. We would expect the tableau to show that the K-axiom is valid. When we input the negation of a valid formula into a tableau, assuming soundness, the tableau will close.
+
+\begin{example}
+    We start by rewriting the K-axiom as a formula in $\Lp$ and then composing any modalities.
+     %Ignored for First submission
+%\nnote{I have used red brackets (and other colours) to make it more readable. If this is distracting, I can remove it.}
+\begin{align*}
+    [\textbf{1}]\tcr{(} p \to q\tcr{)} \to \tcb{(}[\textbf{1}]p \to [\textbf{1}]q\tcb{)}
+    &\equiv [\textbf{1}]\tcr{(}\neg p \vee q\tcr{)} \to \tcb{(}\neg[\textbf{1}]p \vee [\textbf{1}]q\tcb{)}\\
+    &\equiv \neg[\textbf{1}]\tcr{(}\neg p \vee q\tcr{)} \vee \tcb{(}\neg[\textbf{1}]p \vee [\textbf{1}]q\tcb{)}\\
+    &\equiv \neg[\textbf{1}]\tcr{(}[\iota_2](\neg p, q)\tcr{)} \vee [\iota_2]\tcb{(}\neg[\textbf{1}]p, [\textbf{1}]q\tcb{)}\\
+    &\equiv \neg[\textbf{1}(\iota_2)]\tcr{(}\neg p, q\tcr{)} \vee [\iota_2]\tcb{(}[\iota_1](\neg[\textbf{1}]p), [\textbf{1}]q\tcb{)}\\
+    &\equiv \neg[\textbf{1}(\iota_2)]\tcr{(}\neg p, q\tcr{)} \vee [\iota_2(\iota_1,\tb{1})]\tcb{(}\neg[\textbf{1}]p, q\tcb{)}\\
+    &\equiv [\iota_2]\tcg{(}\neg[\textbf{1}(\iota_2)]\tcr{(}\neg p, q\tcr{)} , [\iota_2(\iota_1,\tb{1})]\tcb{(}\neg[\textbf{1}]p, q\tcb{)}\tcg{)}\\
+    &\equiv [\iota_2]\tcg{(}[\iota_1](\neg[\textbf{1}(\iota_2)]\tcr{(}\neg p, q\tcr{)}), [\iota_2(\iota_1,\tb{1})]\tcb{(}\neg[\textbf{1}]p, q\tcb{)}\tcg{)}\\
+    &\equiv [\iota_2(\iota_1,\iota_2(\iota_1,\tb{1}))]\tcg{(}\neg[\textbf{1}(\iota_2)]\tcr{(}\neg p, q\tcr{)} , \neg[\textbf{1}]p, q\tcg{)}\\
+\end{align*}
+
+Now, let's input the negation of this and prove that it is valid:
+
+
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{(#1)}
+\begin{tableau}
+    {vertical/.style={
+before drawing tree={not ignore edge, edge=draw},
+},}
+    [\neg\lsb\iota_2(\iota_1\coms\iota_2(\iota_1\coms\tb{1}))\rsb\tcg{(}\neg\lsb\textbf{1}(\iota_2)\rsb\tcr{(}\neg p\coms q\tcr{)} \coms \neg\lsb\textbf{1}\rsb p\coms q\tcg{)}:x
+    [R_{\iota_2(\iota_1\coms\iota_2(\iota_1\coms\tb{1}))}xy_1y_2y_3 \coms \neg\neg\lsb\textbf{1}(\iota_2)\rsb\tcr{(}\neg p\coms q\tcr{)}:y_1 \coms \neg\neg\lsb\tb{1}\rsb p:y_2 \coms \neg q:y_3 ,just={$(\langle\alpha\rangle E)$ from (1)}
+    [\lsb \textbf{1}(\iota_2)\rsb (\neg p\coms  q) :y_1 ,just={$(\neg E)$ from (2)}
+    [\lsb\textbf{1}\rsb(\lsb\iota_2\rsb(\neg p\coms  q)) :y_1 ,just={$([\alpha(\beta)]D)$ from (3)}
+    [\lsb\textbf{1}\rsb p:y_2 ,just={$(\neg E)$ from (2)}
+    [R_{\iota_2}xz_1z_2 \coms \riO z_1y_1 \coms R_{\iota_2(\iota_1,\tb{1})}z_2y_2y_3 ,just={$(RR)$ from (2)}
+    [R_{\iota_2}z_2w_1w_2 \coms R_{\iota_1}w_1y_2 \coms R_{\tb{1}}w_2y_3 ,just={$(RR)$ from (6)}
+    [\lsb\textbf{1}\rsb p:w_1 ,just={$(\riotn x)$ from (7) and (5)}
+    [\lsb\textbf{1}\rsb p:w_2 ,just={$(\riotn x)$ from (7) and (8)}
+    [p:y_3 ,just={$([\alpha]E)$ from (7) and (9)}
+    [\lsb\textbf{1}\rsb(\lsb\iota_2\rsb(\neg p\coms  q)) :z_1 ,just={$(\riotn x)$ from (6) and (4)}
+    [\lsb\textbf{1}\rsb(\lsb\iota_2\rsb(\neg p\coms  q)) :z_2 ,just={$(\riotn x)$ from (6) and (11)}
+    [\lsb\textbf{1}\rsb(\lsb\iota_2\rsb(\neg p\coms  q)) :w_2 ,just={$(\riotn x)$ from (7) and (12)}
+    [\lsb\iota_2\rsb(\neg p\coms  q) :y_3 ,just={$([\alpha]E)$ from (7) and (13)}
+    [\riT y_3y_3y_3 ,just={$(\riT I)$}
+    [\neg p:y_3,close][q:y_3 ,close ,just={$([\alpha]E)$ from (15) and (14)}
+    ]]]]]]]]]]]]]]]]
+\end{tableau}
+\end{center}
+Here (16a) closes w.r.t.\ (10) and (16b) closes w.r.t.\ (2). Therefore, the tableau is closed, i.e.\ it could not find a counter model for the K-axiom. Hence, we can conclude that the K-axiom is valid (using soundness, Theorem~\ref{Soundness of PMT - theorem}).
+\end{example}
+
+
+\begin{example}
+    In this example, we rewrite $\Diamond\top \to (\Box p \to \Diamond p)$ as a formula in $\LpMax$, and then produce a $\pmt$ tableau deriving it. 
+    %Ignored for First submission
+%\nnote{correct parsing?}
+
+    \begin{align*}
+        \neg\tcb{(}\langle\textbf{1}\rangle[\iota_0] \rightarrow \tcg{(}[\textbf{1}] p \rightarrow \langle\textbf{1}\rangle (p)\tcg{)}\tcb{)}
+        &\equiv \neg\tcb{(}\neg\langle\textbf{1}\rangle[\iota_0] \vee \tcg{(}\neg[\textbf{1}] p \vee \langle\textbf{1}\rangle p\tcg{)}\tcb{)}\\
+        &\equiv \neg\tcb{(}\neg\neg[\textbf{1}]\neg[\iota_0] \vee \tcg{(}\neg[\textbf{1}] p \vee \neg[\textbf{1}]\neg p\tcg{)}\tcb{)}\\
+        &\equiv \neg\tcb{(}[\textbf{1}]\neg[\iota_0] \vee \tcg{(}\neg[\textbf{1}] p \vee \neg[\textbf{1}]\neg p\tcg{)}\tcb{)}\\
+        &\equiv \neg\tcb{(}[\textbf{1}]\neg[\iota_0] \vee\neg[\textbf{1}] p \vee \neg[\textbf{1}]\neg p\tcb{)}\\
+        &\equiv \neg\tcb{(}[\iota_3]\tcg{(}[\textbf{1}]\neg[\iota_0] ,\neg[\textbf{1}] p , \neg[\textbf{1}]\neg p\tcg{)}\tcb{)}\\
+        &\equiv \neg\tcb{(}[\iota_3]\tcg{(}[\textbf{1}]\neg[\iota_0] ,[\iota_1](\neg[\textbf{1}] p) , [\iota_1](\neg[\textbf{1}]\neg p)\tcg{)}\tcb{)}\\
+        &\equiv \neg\tcb{(}[\iota_3(\textbf{1},\iota_1,\iota_1)]\tcg{(}\neg[\iota_0],\neg[\textbf{1}] p , \neg[\textbf{1}]\neg p\tcg{)}\tcb{)}\\
+        &\equiv \neg[\iota_3(\textbf{1},\iota_1,\iota_1)](\neg[\iota_0],\neg[\textbf{1}] p , \neg[\textbf{1}]\neg p)
+    \end{align*}
+
+    \par Although the formula has now been written to be in $\LpMax$, $\pmt$ does not handle $\iota_n$ for any $n>2$, so we need to reduce these with $\iota_1$'s and $\iota_2$'s.
+
+    \begin{align*}
+        \neg[\iota_3(\textbf{1},\iota_1,\iota_1)](\neg[\iota_0],\neg[\textbf{1}] p , \neg[\textbf{1}]\neg p)
+        &\equiv \neg[\iota_2(\iota_1(\textbf{1}),\iota_2(\iota_1,\iota_1))](\neg[\iota_0],\neg[\textbf{1}] p , \neg[\textbf{1}](\neg p))\\
+        &\equiv \neg[\iota_2(\textbf{1},\iota_2))](\neg[\iota_0],\neg[\textbf{1}] p , \neg[\textbf{1}]\neg p)
+    \end{align*}
+
+\par The last step is convenient, but not required.
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{(#1)}
+\begin{tableau}
+    {vertical/.style={
+before drawing tree={not ignore edge, edge=draw},
+},}
+    [\neg\lsb \iota_2(\textbf{1}\coms \iota_2)\rsb (\neg\lsb \iota_0\rsb \coms  \neg\lsb \textbf{1}\rsb  p \coms \neg\lsb \textbf{1}\rsb \neg p) :x
+    [R_{\iota_2(\textbf{1},\iota_2)}xy_1y_2y_3 \coms  \neg\neg\lsb \iota_0\rsb :y_1 \coms  \neg\neg\lsb \textbf{1}\rsb  p :y_2 \coms  \neg\neg\lsb \textbf{1}\rsb \neg p:y_3, just={$(\langle\alpha\rangle E)$ from (1)}
+    [\lsb \textbf{1}\rsb  p :y_2 ,just={$(\neg E)$ from (2)}
+    [\lsb \textbf{1}\rsb \neg p:y_3 ,just={$(\neg E)$ from (2)}
+    [R_{\iota_2}xz_1z_2 \coms  R_{\textbf{1}}z_1y_1 \coms  R_{\iota_2}z_2y_2y_3 ,just={$(RR)$ from (2)}
+    [R_\textbf{1}xy_1 ,just={$(R_{\iota_n}R_\alpha)$ from (5)}
+    [\lsb \textbf{1}\rsb  p :z_2 ,just={$(R_{\iota_n}x)$ from (5) and (3)}
+    [\lsb \textbf{1}\rsb \neg p:z_2 ,just={$(R_{\iota_n}x)$ from (5) and (4)}
+    [\lsb \textbf{1}\rsb  p :x ,just={$(R_{\iota_n}x)$ from (5) and (7)}
+    [\lsb \textbf{1}\rsb \neg p:x ,just={$(R_{\iota_n}x)$ from (5) and (8)}
+    [ \neg p :y_1,just={$([\alpha]E)$ from (6) and (10)}
+    [p:y_1, close, just={$([\alpha]E)$ from (6) and (9)}]]]]]]]]]]]]
+\end{tableau}
+\end{center}
+\end{example}
+
+\par Let's test the validity of a formula that does not belong in the basic modal language.
+
+\begin{example}
+    For this example, we prove the validity of $[\textbf{2}](p,q) \vee \langle\textbf{2}\rangle(\neg p, \neg q)$, but we won't be composing every possible modality. 
+    %Ignored for First submission
+%\nnote{Phrasing?}
+    \begin{align*}
+        \neg([\textbf{2}](p,q) \vee \langle\textbf{2}\rangle(\neg p, \neg q)) & \equiv \neg([\iota_2]\tcb{(}[\textbf{2}](p,q) , \langle\textbf{2}\rangle(\neg p, \neg q)\tcb{)})\\
+        & \equiv \neg([\iota_2]\tcb{(}[\textbf{2}](p,q) , \neg[\textbf{2}](\neg\neg p, \neg\neg q)\tcb{)})\\
+        & \equiv \neg[\iota_2]\tcb{(}[\textbf{2}](p,q) , \neg[\textbf{2}](p, q)\tcb{)}\\
+    \end{align*}
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{(#1)}
+\begin{tableau}
+{vertical/.style={
+before drawing tree={not ignore edge, edge=draw},
+},}
+    [\neg\lsb\iota_2\rsb(\lsb\textbf{2}\rsb(p\coms q) \coms \neg\lsb\textbf{2}\rsb(p\coms q)):x
+    [R_{\iota_2}xy_1y_2 \coms \neg\lsb\textbf{2}\rsb(p\coms q):y_1 \coms \neg\neg\lsb\textbf{2}\rsb(p\coms q) :y_2 ,just={$(\langle\alpha\rangle E)$ from (1)}
+    [\lsb\textbf{2}\rsb(p\coms q) :y_2 ,just={$(\neg E)$ from (2)}
+    [\lsb\textbf{2}\rsb(p\coms q) :x ,just={$(R_{\iota_n}x)$ from (2) and (3)}
+    [\neg\lsb\textbf{2}\rsb(p\coms q) :x ,close,just={$(R_{\iota_n}x)$ from (2)}
+    ]]]]]
+\end{tableau}
+\end{center}
+
+% \begin{center}
+% \renewcommand*\linenumberstyle[1]{(#1)}
+% \begin{tableau}
+% {vertical/.style={
+% before drawing tree={not ignore edge, edge=draw},
+% },}
+%     [\neg\lsb\iota_2\rsb(\lsb\textbf{2}\rsb(p\coms q) \coms \neg\lsb\textbf{2}\rsb(p\coms q)):x
+%     [R_{\iota_2(\textbf{2}\coms\iota_1)}xy_1y_2y_3 \coms \neg p:y_1 \coms \neg q:y_2 \coms \neg\neg\lsb\textbf{2}(p\coms q)\rsb :y_3 ,just={$(\langle\alpha\rangle E)$ from (1)}
+%     [\lsb\textbf{2}\rsb(p\coms q) :y_3 ,just={$(\neg E)$ from (2)}
+%     [R_{\iota_2}xz_1z_2 \coms R_\textbf{2}z_1y_1y_2 \coms R_{\iota_1}z_2y_3 ,just={$(RR)$ from (2)}
+%     [R_\textbf{2}xy_1y_2 ,just={$(R_{\iota_n}R_\alpha)$ from (4)}
+%     [\lsb\textbf{2}\rsb(p\coms q) :z_2 ,just={$(R_{\iota_n}x)$ from (4) and (3)}
+%     [\lsb\textbf{2}\rsb(p\coms q) :x ,just={$(R_{\iota_n}x)$ from (4) and (6)}
+%     [p:y_1,close][q:y_2,close, just={$([\alpha]E)$ from (5) and (7)}]
+%     ]]]]]]]    
+% \end{tableau}
+% \end{center}
+    \par The node (5) closes with respect to (4). Since the tableau could not find a counter-model for $[\textbf{2}](p,q) \vee \langle\textbf{2}\rangle(\neg p, \neg q)$, then, with soundness, it is valid. Note that $[\textbf{2}](p,q) \vee \langle\textbf{2}\rangle(\neg p, \neg q)$ can be rewritten as $[\textbf{2}](p,q) \vee \neg [\textbf{2}](p, q)$, showing that $[\textbf{2}](p,q) \vee \langle\textbf{2}\rangle(\neg p, \neg q)$ follows the same scheme as the propositional formula $p \vee \neg p$. This is not a pure modal language instance of $p \vee \neg p$ since $\vee$ is not in $\Lp$.
+    \par We can use this example to show that the tableau for a formula is not unique. Since there is no priority of rules that we need to use, we could have implemented the $(\langle\alpha\rangle E)$ rule to $\neg[\textbf{2}](p,q):y_1$, and the tableau would have taken more steps to close.
+\end{example}
+
+\begin{remark}
+    It is appropriate here to mention that the closure of tableau is independent of the order of rule application.
+\end{remark}
+
+\par Before we go into the last example of this section, we will point out a more systematic way of keeping track of what formulas and relational atoms are in our set $\Delta$. Since we don't copy all the previous conclusions over (when displaying tableaux), a more systematic way of doing this is necessary --- especially when the tableau gets long.
+\par For every tableau rule, there are labelled formulas and relational atoms that get replaced, and others get copied. When doing a tableau (using Fitting's style \cite{fitting1972tableau} to display these tableaux), we can tick off any labelled formulas/relational atoms that were replaced by the tableau rule. I.e., anything copied by the tableau rule is not ticked off. Let's see how this works when applying one rule.
+\par If we have the following at a node: 
+\begin{center}
+\renewcommand*\linenumberstyle[1]{}
+\begin{tableau}
+    {vertical/.style={
+before drawing tree={not ignore edge, edge=draw},
+},}
+    [\Delta \coms \neg\lsb \alpha\rsb (\phi_1\text{
+    ,\,} \phi_2\coms  \ldots\coms  \phi_{m}):x]
+\end{tableau}
+\end{center}
+
+\par Then applying the $(\langle\alpha\rangle E)$ rule, $\neg\lsb \alpha\rsb (\phi_1\text{,\,} \phi_2\coms  \ldots\coms  \phi_{m})$ is replaced by $R_\alpha xy_1\ldots y_m \coms  \neg\phi_1 :y_1 \coms  \ldots\coms \\ \neg\phi_m :y_m$ and so we can tick off $\neg\lsb \alpha\rsb (\phi_1\text{,\,} \phi_2\coms  \ldots\coms  \phi_{m})$. And in the tableau, it will look as follows:
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{}
+\begin{tableau}
+    {}
+    [\Delta \coms \neg\lsb \alpha\rsb (\phi_1\text{
+    ,\,} \phi_2\coms  \ldots\coms  \phi_{m}):x\checkmark
+    [\Delta \coms R_\alpha xy_1\ldots y_m \coms  \neg\phi_1 :y_1 \coms  \ldots \coms  \neg\phi_m :y_m ,just={$(\langle\alpha\rangle E)$}
+    ]]
+\end{tableau}
+\end{center}
+
+\par Note: we have been doing this implicitly in the previous examples, so this is not describing a new way of doing these tableaux. So, let's do an example with this in mind:
+
+\begin{example}\label{Open ft tableau}
+With this example we will input the negation of $\neg(\langle \textbf{1} \rangle (p) \wedge (\langle\textbf{1}\rangle (q) \wedge [\textbf{1}](\neg(p \wedge q))))$ to deduce if this formula is valid. Again, we assume the soundness and completeness of $\pmt$.
+\begin{align*}
+    \neg\neg(\langle \textbf{1} \rangle (p) \wedge \tcr{(}\langle\textbf{1}\rangle (q) \wedge [\textbf{1}]\tcb{(}\neg(p \wedge q)\tcb{)}\tcr{)})
+    &\equiv \langle \textbf{1} \rangle (p) \wedge \tcr{(}\langle\textbf{1}\rangle (q) \wedge [\textbf{1}]\tcb{(}\neg(p \wedge q)\tcb{)}\tcr{)}\\
+    &\equiv \langle \textbf{1} \rangle (p) \wedge \tcr{(}\langle\textbf{1}\rangle (q) \wedge [\textbf{1}]\tcb{(}\neg p \vee \neg q\tcb{)}\tcr{)}\\
+    &\equiv \langle \textbf{1} \rangle (p) \wedge \tcr{(}\langle\textbf{1}\rangle (q) \wedge [\textbf{1}]\tcb{(}[\iota_2](\neg p \coms \neg q)\tcb{)}\tcr{)}\\
+    &\equiv \langle \textbf{1} \rangle (p) \wedge \tcr{(}\langle\textbf{1}\rangle (q) \wedge [\textbf{1}(\iota_2)]\tcb{(}\neg p, \neg q\tcb{)}\tcr{)}\\
+    &\equiv \langle \textbf{1} \rangle (p) \wedge \langle \iota_2 \rangle\tcr{(}\langle\textbf{1}\rangle (q), [\textbf{1}(\iota_2)]\tcb{(}\neg p, \neg q\tcb{)}\tcr{)}\\
+    &\equiv \langle \iota_2 \rangle\tcg{(}\langle \textbf{1} \rangle (p) , \langle \iota_2 \rangle\tcr{(}\langle\textbf{1}\rangle (q), [\textbf{1}(\iota_2)]\tcb{(}\neg p, \neg q\tcb{)}\tcr{)}\tcg{)}\\
+    &\equiv \langle \iota_2 \rangle\tcg{(}\langle \textbf{1} \rangle (p) , \langle \iota_2 \rangle\tcr{(}\neg[\textbf{1}] (\neg q), [\textbf{1}(\iota_2)]\tcb{(}\neg p, \neg q\tcb{)}\tcr{)}\tcg{)}\\
+    &\equiv \langle \iota_2 \rangle\tcg{(}\langle \textbf{1} \rangle (p) , \neg[\iota_2]\tcr{(}\neg\neg [\textbf{1}] (\neg q), \neg[\textbf{1}(\iota_2)]\tcb{(}\neg p, \neg q\tcb{)}\tcr{)}\tcg{)}\\
+    &\equiv \langle \iota_2 \rangle\tcg{(}\neg[\textbf{1}] (\neg p) , \neg[\iota_2]\tcr{(} [\textbf{1}] (\neg q), \neg[\textbf{1}(\iota_2)]\tcb{(}\neg p, \neg q\tcb{)}\tcr{)}\tcg{)}\\
+    &\equiv \neg[\iota_2] \tcg{(}\neg\neg[\textbf{1}] (\neg p) , \neg\neg[\iota_2]\tcr{(} [\textbf{1}] (\neg q), \neg[\textbf{1}(\iota_2)]\tcb{(}\neg p, \neg q\tcb{)}\tcr{)}\tcg{)}\\
+    &\equiv \neg[\iota_2] \tcg{(}[\textbf{1}] (\neg p) , [\iota_2]\tcr{(}[\textbf{1}] (\neg q), \neg[\textbf{1}(\iota_2)]\tcb{(}\neg p, \neg q\tcb{)}\tcr{)}\tcg{)}\\
+    &\equiv \neg[\iota_2] \tcg{(}[\textbf{1}] (\neg p) , [\iota_2]\tcr{(}[\textbf{1}] (\neg q), [\iota_1](\neg[\textbf{1}(\iota_2)]\tcb{(}\neg p, \neg q\tcb{)})\tcr{)}\tcg{)}\\
+    &\equiv \neg[\iota_2] \tcg{(}[\textbf{1}] (\neg p) , [\iota_2(\textbf{1}, \iota_1)]\tcr{(}\neg q, \neg[\textbf{1}(\iota_2)]\tcb{(}\neg p, \neg q\tcb{)}\tcr{)}\tcg{)}\\
+    &\equiv \neg[\iota_2(\textbf{1}, \iota_2(\textbf{1}, \iota_1))] \tcg{(}\neg p , \neg q, \neg[\textbf{1}(\iota_2)]\tcb{(}\neg p, \neg q\tcb{)}\tcg{)}\\
+\end{align*}
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{(#1)}
+\resizebox{160mm}{!}{
+\begin{tableau}
+    {vertical/.style={
+before drawing tree={not ignore edge, edge=draw},
+},}
+    [\neg\lsb \iot{2}(\tb{1}\coms\iot{2}(\tb{1}\coms\iot{1}))\rsb(\neg p \coms \neg q \coms \neg\lsb\tb{1}(\iot{2})\rsb(\neg p\coms  \neg q)) :x \checkmark
+    [R_{\iot{2} (\textbf{1},\iot{2}(\textbf{1},\iot{1}))}xy_1y_2y_3 \checkmark \coms  \neg\neg p:y_1 \checkmark  \coms  \neg\neg q:y_2 \checkmark  \coms  \neg\neg\lsb\textbf{1}(\iot{2})\rsb(\neg p \coms  \neg q):y_3 \checkmark , just={($\langle\alpha\rangle E$) from (1)}
+    [p:y_1 , just={($\neg E)$ from (2)}
+    [q:y_2 , just={($\neg E)$ from (2)}
+    [ \lsb  1(\iot{2}) \rsb (\neg p \coms  \neg q):y_3  \checkmark , just={($\neg E)$ from (2)}
+    [R_{\iot{2}}xz_1z_2 \coms R_\textbf{1}z_1y_1 \coms R_{\iot{2}(\textbf{1},\iot{1})}z_2y_2y_3 \checkmark, just={$(RR)$ from (2)}
+    [R_{\iot{2}}z_2w_1w_2 \coms R_\textbf{1}w_1y_2 \coms R_{\iot{1}}w_2y_3 , just={$(RR)$ from (6)}
+    [\lsb\textbf{1}\rsb (\lsb \iot{2}\rsb (\neg p \coms  \neg q) ) :y_3, just={ ([$\alpha(\beta)]D)$ from (5)}
+    [\lsb\textbf{1}\rsb (\lsb \iot{2}\rsb (\neg p \coms  \neg q) ) :w_2, just={ ($R_{\iota_n}x$) from (7) and (8)}
+    [\lsb\textbf{1}\rsb  (\lsb \iot{2}\rsb  (\neg p \coms  \neg q) ) :z_2, just={ ($R_{\iota_n}x$) from (7) and (9)}
+    [R_\textbf{1}z_2y_2 , just={$(R_{\iota_n}R_{\alpha}$) from (7)}
+    [\lsb \iot{2}\rsb  (\neg p \coms  \neg q) :y_2 , just={($[\alpha]E$) from (11) and (10)}
+    [\riT y_2y_2y_2 ,just={$(\riT I)$}
+    [\neg q: y_2,close][\neg p:y_2, just={$(\lsb 
+    \alpha\rsb E$), (14a) closes w.r.t.\ (4)}
+    [\lsb\textbf{1}\rsb  (\lsb \iot{2}\rsb  (\neg p \coms  \neg q) ) :x, just={ ($R_{\iota_n}x$) from (6) and (10)}
+    [R_\tb{1}xy_1, just={$(\riotn R_\alpha)$ from (6)}
+    [\lsb \iot{2}\rsb (\neg p\coms\neg q):y_1, just={$([\alpha]E)$ from (16) and (15)}
+    [\riT y_1y_1y_1, just={$(\riT I)$}
+    [\neg p:y_1,close][\neg q:y_1, just={$(\lsb\alpha\rsb E$), (19a) closes w.r.t.\ (3)}
+    ]]]]]]]]]]]]]]]]]]]
+\end{tableau}}
+\end{center}
+
+\par We continue the tableau from (19).
+
+\begin{center}
+\renewcommand*\linenumberstyle[1]{(#1)}
+\begin{tableau}
+    {vertical/.style={
+before drawing tree={not ignore edge, edge=draw},
+},line no shift=18}
+    [\neg q:y_1
+    [\lsb\textbf{1}\rsb (\lsb \iot{2}\rsb (\neg p \coms  \neg q) ) :w_1, just={$(\riotn x)$ from (7) and (9)}
+    [\lsb\textbf{1}\rsb (\lsb \iot{2}\rsb (\neg p \coms  \neg q) ) :z_1, just={$(\riotn x)$ from (6) and (10)}
+    [R_\tb{1}z_2y_1, just={$(\riotn R_\alpha)$ from (6)}
+    [R_\tb{1}w_1y_1, just={$(\riotn R_\alpha)$ from (7) and (22)}
+    [R_\tb{1}w_2y_1, just={$(\riotn R_\alpha)$ from (7) and (22)}
+    [R_\tb{1}y_3y_1, just={$(\riotn R_\alpha)$ from (7) and (24)}
+    [R_\textbf{1}w_2y_2 , just={$(R_{\iota_n}R_{\alpha}$) from (7)}
+    [R_\textbf{1}y_3y_2 , just={$(R_{\iota_n}R_{\alpha}$) from (7) and (26)}
+    [R_\textbf{1}z_1y_2 , just={$(R_{\iota_n}R_{\alpha}$) from (6) and (11)}
+    [R_\textbf{1}xy_2 , just={$(R_{\iota_n}R_{\alpha}$) from (6) and (11)}
+    ]]]]]]]]]]]
+\end{tableau}
+\end{center}
+
+\par We will stop the tableau here. This is for presentation reasons. The tableau will reach all its end nodes without closing. To see this, notice that none of $(\neg E), (\langle\alpha\rangle E), (RR), ([\alpha(\beta)]D)$ are applicable to any non-ticked tableau terms occurring in the tableau. Also, for any application of $(\riotn x)$, it would repeat what is already on the branch. This is the same with the $([\alpha]E)$ rule. We can still apply the $(\riO I)$ and $(\riT I)$ rules, but this adds no `useful' information. Now the $(\riotn R_\alpha)$ rule can still be applied to the relational atoms that have $\iota_1$ or $\iot{2}$ as their underlying relation, but displaying this will result in a tableau that has more than two hundred steps. This is because $x,y_3,z_1,z_2,w_1,w_2$ are related to each other with some $\iota$-relation and so $(R_{\iotn}R_\alpha)$ will have to be applied multiple times so that every combination of $\riT ***$ and $\riO **$ can be listed --- $6\times 6\times 6>200$. Once this is done, every rule will be used up to saturation. Since this tableau is open, we can find a model to satisfy the original formula. But to say this with confidence, we need completeness.
+\par We reiterate what the $\checkmark$'s indicate with an example. To create node (6), we apply (RR) using $R_{\iota_2 (\textbf{1},\iota_2(\textbf{1},\iota_1))}xy_1y_2y_3$ from the displayed node (2). This relational atom is replaced with three new relational atoms, and so $R_{\iota_2 (\textbf{1},\iota_2(\textbf{1},\iota_1))}xy_1y_2y_3$ can be ticked off. What this means is that $R_{\iota_2 (\textbf{1},\iota_2(\textbf{1},\iota_1))}xy_1y_2y_3$ is not part of the implicit $\Delta$ in node (6).
+\end{example}
+
+\par These are all the examples that we will do in this section. We have assumed soundness and completeness of $\pmt$, but the next two sections are dedicated to proving the soundness and completeness of $\pmt$.
